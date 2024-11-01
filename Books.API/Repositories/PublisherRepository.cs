@@ -1,35 +1,62 @@
 ﻿
+using Books.API.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace Books.API;
 
 public class PublisherRepository : IPublisherRepository
 {
-    public Task<Publisher> Add(Publisher publisher)
+    protected readonly BooksDbContext _context;
+
+    public PublisherRepository(BooksDbContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
+    }
+    public async Task<Publisher> Add(Publisher publisher)
+    {
+        var result = await _context.AddAsync(publisher);
+        await _context.SaveChangesAsync();
+        return result.Entity;
     }
 
-    public Task<bool> Delete(int id)
+    public async Task<bool> Delete(int id)
     {
-        throw new NotImplementedException();
+        var entity = await Get(id);
+        _context.Publishers.Remove(entity);
+        var result = await _context.SaveChangesAsync();
+        return result > 0;
     }
 
-    public Task<bool> Exists(int id)
+    public async Task<bool> Exists(int id)
     {
-        throw new NotImplementedException();
+        return await _context.Publishers.AnyAsync(a => a.Id == id);
     }
 
-    public Task<Publisher> Get(int id)
+    public async Task<Publisher> Get(int id)
     {
-        throw new NotImplementedException();
+        var entity = await _context.Publishers.FindAsync(id);
+        if (entity == null)
+        {
+            throw new KeyNotFoundException($"Publisher with id {id} not found");
+        }
+        return entity;
     }
 
-    public Task<List<Publisher>> GetAll()
+    public async Task<List<Publisher>> GetAll()
     {
-        throw new NotImplementedException();
+        return await _context.Publishers.ToListAsync();
     }
 
-    public Task<Publisher> Update(Publisher publisher)
+    public async Task<Publisher> Update(Publisher publisher)
     {
-        throw new NotImplementedException();
+        _context.Publishers.Update(publisher);
+        await _context.SaveChangesAsync();
+
+        var entity = await _context.Publishers.FindAsync(publisher.Id);
+        if (entity == null)
+        {
+            throw new KeyNotFoundException($"Publisher with id {publisher.Id} not found");
+        }
+        return entity;
     }
 }
