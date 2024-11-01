@@ -21,5 +21,9 @@
   <ItemGroup>
     <ProjectReference Include="../Books.Shared/Books.Shared.csproj"/>
   </ItemGroup>
+  <ItemGroup>
+    <Using Include="System.Console" Static="true" />
+  </ItemGroup>
+
 
 </Project>
