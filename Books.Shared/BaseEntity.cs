@@ -1,6 +1,6 @@
 ﻿namespace Books.Shared;
 
-public class Class1
+public abstract class BaseEntity<TId>
 {
-
+		public TId Id { get; set; }
 }
