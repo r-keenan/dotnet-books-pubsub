@@ -1,4 +1,3 @@
-using Books.API;
 using Books.API.Models;
 using Microsoft.EntityFrameworkCore;
 
