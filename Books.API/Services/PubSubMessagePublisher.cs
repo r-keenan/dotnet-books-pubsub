@@ -2,7 +2,7 @@
 using Google.Cloud.PubSub.V1;
 using Google.Protobuf;
 
-namespace Books.API;
+namespace Books.API.Services;
 
 public class PubSubMessagePublisher : IPubSubMessagePublisher
 {

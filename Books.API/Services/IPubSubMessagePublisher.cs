@@ -1,4 +1,4 @@
-﻿namespace Books.API;
+﻿namespace Books.API.Services;
 
 public interface IPubSubMessagePublisher
 {
