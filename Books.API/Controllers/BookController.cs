@@ -1,4 +1,5 @@
 using AutoMapper;
+using Books.API.Constants;
 using Books.API.Repositories;
 using Books.API.Services;
 using Books.Shared.Messages;
@@ -18,8 +19,9 @@ namespace Books.API.Controllers
         private readonly IMapper _mapper;
         private readonly IPublishEndpoint _publishEndpoint;
         private readonly IPubSubMessagePublisher _pubsubMessagePublisher;
+        private readonly ApiEndpoints _apiEndpoints;
 
-        public BookController(IBookRepository bookRepository, IAuthorRepository authorRepository, IPublisherRepository publisherRepository, IMapper mapper, IPublishEndpoint publishEndpoint, IPubSubMessagePublisher pubSubMessagePublisher)
+        public BookController(IBookRepository bookRepository, IAuthorRepository authorRepository, IPublisherRepository publisherRepository, IMapper mapper, IPublishEndpoint publishEndpoint, IPubSubMessagePublisher pubSubMessagePublisher, ApiEndpoints apiEndpoints)
         {
             _bookRepository = bookRepository;
             _authorRepository = authorRepository;
@@ -27,6 +29,7 @@ namespace Books.API.Controllers
             _mapper = mapper;
             _publishEndpoint = publishEndpoint;
             _pubsubMessagePublisher = pubSubMessagePublisher;
+            _apiEndpoints = apiEndpoints;
         }
 
         [HttpGet]
