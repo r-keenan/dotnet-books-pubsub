@@ -1,4 +1,6 @@
 using AutoMapper;
+using Books.API.Repositories;
+using Books.API.Services;
 using Books.Shared.Messages;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
