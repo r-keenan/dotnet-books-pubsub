@@ -11,11 +11,11 @@ public class Book : BaseModel
     public BookGenre Genre { get; set; }
     [Range(1, 10_000, ErrorMessage = "PageLength must be between 1 and 10,000 characters")]
     public int PageLength { get; set; }
-    public DateTime PublicationDate { get; set; }
+    public DateTime DatePublished { get; set; }
     public int AuthorId { get; set; }
     [Required]
     public Author Author { get; set; }
-    public Publisher PublisherId { get; set; }
+    public int PublisherId { get; set; }
     [Required]
     public Publisher Publisher { get; set; }
 }
