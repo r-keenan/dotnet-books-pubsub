@@ -24,14 +24,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<ApiEndpoints>();
 
-builder.Services.AddScoped<IPubSubMessagePublisher, PubSubMessagePublisher>();
-
 builder.Services.AddTransient<IBookRepository, BookRepository>();
 builder.Services.AddTransient<IAuthorRepository, AuthorRepository>();
 builder.Services.AddTransient<IPublisherRepository, PublisherRepository>();
 builder.Services.AddTransient(typeof(IHttpApiRepository<>), typeof(HttpApiRepository<>));
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

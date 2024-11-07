@@ -1,4 +1,3 @@
-using AutoMapper;
 using Books.API.Constants;
 using Books.API.Repositories;
 using Books.API.Services;
@@ -17,16 +16,14 @@ namespace Books.API.Controllers
         private readonly IAuthorRepository _authorRepository;
         private readonly IPublisherRepository _publisherRepository;
         private readonly IPublishEndpoint _publishEndpoint;
-        private readonly IPubSubMessagePublisher _pubsubMessagePublisher;
         private readonly ApiEndpoints _apiEndpoints;
 
-        public BookController(IBookRepository bookRepository, IAuthorRepository authorRepository, IPublisherRepository publisherRepository, IPublishEndpoint publishEndpoint, IPubSubMessagePublisher pubSubMessagePublisher, ApiEndpoints apiEndpoints)
+        public BookController(IBookRepository bookRepository, IAuthorRepository authorRepository, IPublisherRepository publisherRepository, IPublishEndpoint publishEndpoint, ApiEndpoints apiEndpoints)
         {
             _bookRepository = bookRepository;
             _authorRepository = authorRepository;
             _publisherRepository = publisherRepository;
             _publishEndpoint = publishEndpoint;
-            _pubsubMessagePublisher = pubSubMessagePublisher;
             _apiEndpoints = apiEndpoints;
         }
 
@@ -102,9 +99,6 @@ namespace Books.API.Controllers
 
             // Publish to RabbitMQ with MassTransit
             await _publishEndpoint.Publish(bookMessage);
-
-            // Publish to GCP PubSub with MassTransit
-            await _pubsubMessagePublisher.PublishMessage(bookMessage, "books");
 
             return Ok();
         }
