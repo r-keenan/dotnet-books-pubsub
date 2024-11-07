@@ -11,9 +11,12 @@
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" Version="8.2.2" />
+    <PackageReference Include="Aspire.Hosting.RabbitMQ" Version="8.2.2" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="8.2.2" />
+
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="../Books.API/Books.API.csproj"/>
+    <ProjectReference Include="../Books.API/Books.API.csproj" />
   </ItemGroup>
 
 </Project>

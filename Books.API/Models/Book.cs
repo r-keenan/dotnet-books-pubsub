@@ -18,4 +18,26 @@ public class Book : BaseModel
     public int PublisherId { get; set; }
     [Required]
     public Publisher Publisher { get; set; }
+
+    public Book(BookDto dto)
+    {
+        Id = dto.Id;
+        Title = dto.Title;
+        Genre = dto.Genre;
+        PageLength = dto.PageLength;
+        DatePublished = dto.DatePublished;
+        AuthorId = dto.AuthorId;
+        PublisherId = dto.PublisherId;
+    }
+
+    public BookDto ToDto() => new()
+    {
+        Id = Id,
+        Title = Title,
+        Genre = Genre,
+        PageLength = PageLength,
+        DatePublished = DatePublished,
+        AuthorId = AuthorId,
+        PublisherId = PublisherId,
+    };
 }
