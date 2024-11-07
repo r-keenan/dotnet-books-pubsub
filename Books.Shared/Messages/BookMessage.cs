@@ -1,11 +1,13 @@
-﻿namespace Books.Shared.Messages;
+﻿using Books.Shared.Enums;
+
+namespace Books.Shared.Messages;
 
 public class BookMessage
 {
     public int Id { get; set; }
     public string Title { get; set; } = "";
     public int PageLength { get; set; }
-    public string Genre { get; set; } = "";
+    public BookGenre Genre { get; set; } = BookGenre.UNKNOWN;
     public DateTime DatePublished { get; set; }
     public int AuthorId { get; set; }
     public int PublisherId { get; set; }

@@ -3,10 +3,11 @@
 public enum BookGenre
 {
     FANTASY,
-    MYSTERY,
-    SCIENCE_FICTION,
     HORROR,
-    NONFICTION,
     LITERARY_FICTION,
-    THRILLER
+    MYSTERY,
+    NONFICTION,
+    SCIENCE_FICTION,
+    THRILLER,
+    UNKNOWN
 }

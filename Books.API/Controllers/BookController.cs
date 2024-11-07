@@ -55,15 +55,16 @@ namespace Books.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBook(int id, Book book)
+        public async Task<IActionResult> PutBook(int id, BookDto dto)
         {
-            if (id != book.Id)
+            if (id != dto.Id)
             {
                 return BadRequest();
             }
 
             try
             {
+                var book = new Book(dto);
                 await _bookRepository.Update(book);
             }
             catch (DbUpdateConcurrencyException)
@@ -76,6 +77,12 @@ namespace Books.API.Controllers
                 {
                     throw;
                 }
+            }
+            catch (Exception ex)
+            {
+                // I would actually log this in prod and not writeline it
+                WriteLine(ex);
+                throw;
             }
 
             return NoContent();
@@ -91,7 +98,7 @@ namespace Books.API.Controllers
                 Id = book.Id,
                 Title = bookDto.Title,
                 PageLength = bookDto.PageLength,
-                Genre = bookDto.Genre.ToString(),
+                Genre = bookDto.Genre,
                 DatePublished = bookDto.DatePublished,
                 AuthorId = bookDto.AuthorId,
                 PublisherId = bookDto.PublisherId

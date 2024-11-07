@@ -46,15 +46,16 @@ namespace MyApp.Namespace
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPublisher(int id, Publisher publisher)
+        public async Task<IActionResult> PutPublisher(int id, PublisherDto dto)
         {
-            if (id != publisher.Id)
+            if (id != dto.Id)
             {
                 return BadRequest();
             }
 
             try
             {
+                var publisher = new Publisher(dto);
                 await _publisherRepository.Update(publisher);
             }
             catch (DbUpdateConcurrencyException)
