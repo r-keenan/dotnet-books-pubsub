@@ -83,15 +83,19 @@ namespace MyApp.Namespace
         public async Task<IActionResult> CreatePublisher(PublisherDto publisherDto)
         {
             var publisher = new Publisher(publisherDto);
+
+            var newPublisher = await _publisherRepository.Add(publisher);
+
             var publisherMessage = new PublisherMessage()
             {
-                Name = publisherDto.Name,
-                Address1= publisherDto.Address1,
-                Address2 = publisherDto.Address2,
-                City = publisherDto.City,
-                State = publisherDto.State,
-                ZipCode = publisherDto.ZipCode,
-                DateFounded = publisherDto.DateFounded
+                Id = newPublisher.Id,
+                Name = newPublisher.Name,
+                Address1= newPublisher.Address1,
+                Address2 = newPublisher.Address2,
+                City = newPublisher.City,
+                State = newPublisher.State,
+                ZipCode = newPublisher.ZipCode,
+                DateFounded = newPublisher.DateFounded
             };
 
             // Publish to RabbitMQ with MassTransit

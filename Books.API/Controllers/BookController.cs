@@ -93,15 +93,18 @@ namespace Books.API.Controllers
         public async Task<IActionResult> CreateBook(BookDto bookDto)
         {
             var book = new Book(bookDto);
+
+            var newBook = await _bookRepository.Add(book);
+
             var bookMessage = new BookMessage()
             {
-                Id = book.Id,
-                Title = bookDto.Title,
-                PageLength = bookDto.PageLength,
-                Genre = bookDto.Genre,
-                DatePublished = bookDto.DatePublished,
-                AuthorId = bookDto.AuthorId,
-                PublisherId = bookDto.PublisherId
+                Id = newBook.Id,
+                Title = newBook.Title,
+                PageLength = newBook.PageLength,
+                Genre = newBook.Genre,
+                DatePublished = newBook.DatePublished,
+                AuthorId = newBook.AuthorId,
+                PublisherId = newBook.PublisherId
             };
 
             // Publish to RabbitMQ with MassTransit
