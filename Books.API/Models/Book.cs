@@ -40,4 +40,17 @@ public class Book : BaseModel
         AuthorId = AuthorId,
         PublisherId = PublisherId,
     };
+
+    public BookDetailsDto ToDetailsDto() => new()
+        {
+            Id = Id,
+            Title = Title,
+            Genre = Genre,
+            PageLength = PageLength,
+            DatePublished = DatePublished,
+            AuthorId = AuthorId,
+            Author = Author.ToDto(),
+            PublisherId = PublisherId,
+            Publisher = Publisher.ToDto()
+        };
 }

@@ -16,17 +16,15 @@ namespace Books.API.Controllers
         private readonly IBookRepository _bookRepository;
         private readonly IAuthorRepository _authorRepository;
         private readonly IPublisherRepository _publisherRepository;
-        private readonly IMapper _mapper;
         private readonly IPublishEndpoint _publishEndpoint;
         private readonly IPubSubMessagePublisher _pubsubMessagePublisher;
         private readonly ApiEndpoints _apiEndpoints;
 
-        public BookController(IBookRepository bookRepository, IAuthorRepository authorRepository, IPublisherRepository publisherRepository, IMapper mapper, IPublishEndpoint publishEndpoint, IPubSubMessagePublisher pubSubMessagePublisher, ApiEndpoints apiEndpoints)
+        public BookController(IBookRepository bookRepository, IAuthorRepository authorRepository, IPublisherRepository publisherRepository, IPublishEndpoint publishEndpoint, IPubSubMessagePublisher pubSubMessagePublisher, ApiEndpoints apiEndpoints)
         {
             _bookRepository = bookRepository;
             _authorRepository = authorRepository;
             _publisherRepository = publisherRepository;
-            _mapper = mapper;
             _publishEndpoint = publishEndpoint;
             _pubsubMessagePublisher = pubSubMessagePublisher;
             _apiEndpoints = apiEndpoints;
@@ -52,9 +50,9 @@ namespace Books.API.Controllers
 
             var author = await _authorRepository.Get(book.AuthorId);
 
-            var bookDto = _mapper.Map<BookDetailsDto>(book);
-            bookDto.Author = _mapper.Map<AuthorDto>(author);
-            bookDto.Publisher = _mapper.Map<PublisherDto>(publisher);
+            var bookDto = book.ToDetailsDto();
+            bookDto.Author = author.ToDto();
+            bookDto.Publisher = publisher.ToDto();
 
             return bookDto;
         }
@@ -90,7 +88,7 @@ namespace Books.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateBook(BookDto bookDto)
         {
-            var book = _mapper.Map<Book>(bookDto);
+            var book = new Book(bookDto);
             var bookMessage = new BookMessage()
             {
                 Id = book.Id,
