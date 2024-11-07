@@ -1,4 +1,4 @@
-﻿namespace Books.API;
+﻿namespace Books.Shared.Enums;
 
 public enum BookGenre
 {

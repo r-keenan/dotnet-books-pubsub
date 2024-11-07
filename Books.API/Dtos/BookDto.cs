@@ -1,4 +1,6 @@
-﻿namespace Books.API;
+﻿using Books.Shared.Enums;
+
+namespace Books.API;
 
 public class BookDto
 {
