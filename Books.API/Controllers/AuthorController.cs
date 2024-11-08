@@ -1,5 +1,6 @@
 using Books.API.Constants;
 using Books.API.Repositories;
+using Books.Shared.Constants;
 using Books.Shared.Messages;
 using MassTransit;
 using Microsoft.AspNetCore.Http;
@@ -14,12 +15,14 @@ namespace Books.API.Controllers
     {
         private readonly IAuthorRepository _authorRepository;
         private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IKafkaProducerService _kafkaProducer;
         private readonly ApiEndpoints _apiEndpoints;
 
-        public AuthorController(IAuthorRepository authorRepository, IPublishEndpoint publishEndpoint, ApiEndpoints apiEndpoints)
+        public AuthorController(IAuthorRepository authorRepository, IPublishEndpoint publishEndpoint, IKafkaProducerService kafkaProducer, ApiEndpoints apiEndpoints)
         {
             _authorRepository = authorRepository;
             _publishEndpoint = publishEndpoint;
+            _kafkaProducer = kafkaProducer;
             _apiEndpoints = apiEndpoints;
         }
 
@@ -99,6 +102,9 @@ namespace Books.API.Controllers
 
             // Publish to RabbitMQ with MassTransit
             await _publishEndpoint.Publish(authorMessage);
+
+            // Publish to Kafka Topic
+            await _kafkaProducer.ProduceAsync(KafkaTopics.AuthorsTopic, newAuthor);
 
             return Ok();
         }
