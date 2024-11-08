@@ -1,3 +1,6 @@
+using Books.AppHost.Extensions;
+using Books.Shared.Constants;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
 builder.AddPostgres("postgres").WithPgAdmin().AddDatabase("books");
@@ -13,9 +16,10 @@ var kafka = builder.AddContainer("kafka", "confluentinc/cp-kafka:latest")
     .WithEnvironment("KAFKA_CONTROLLER_LISTENER_NAMES", "CONTROLLER")
     .WithEnvironment("KAFKA_LISTENERS", "PLAINTEXT://kafka:9092,CONTROLLER://kafka:9093")
     .WithEndpoint(9092, 9092)
-    .WithEndpoint(9093, 9093);
+    .WithEndpoint(9093, 9093)
+    .WithTopics(KafkaTopics.GetAllTopics(), numPartitions: 3, replicationFactor: 1);
 
-var controlCenter = builder.AddContainer("control-center", "confluentinc/cp-enterprise-control-center:latest")
+var controlCenter = builder.AddContainer("control-center", "confluentivgggnc/cp-enterprise-control-center:latest")
     .WithEnvironment("CONTROL_CENTER_BOOTSTRAP_SERVERS", "kafka:9092")
     .WithEnvironment("CONTROL_CENTER_REPLICATION_FACTOR", "1")
     .WithEnvironment("PORT", "9021")

@@ -15,10 +15,12 @@
     <PackageReference Include="Aspire.Hosting.RabbitMQ" Version="8.2.2" />
     <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="8.2.2" />
     <PackageReference Include="Aspire.Npgsql" Version="8.2.2" />
+    <PackageReference Include="Confluent.Kafka" Version="2.6.0"/>
 
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../Books.API/Books.API.csproj" />
+    <ProjectReference Include="../Books.Shared/Books.Shared.csproj" IsAspireProjectResource="false" />
   </ItemGroup>
 
 </Project>
