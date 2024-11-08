@@ -1,3 +1,4 @@
+using Books.API;
 using Books.API.Constants;
 using Books.API.Models;
 using Books.API.Repositories;
@@ -22,6 +23,8 @@ builder.Services.AddMassTransit(x =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
+builder.Services.Configure<KafkaProducerConfig>(builder.Configuration.GetSection("KafkaProducer"));
+builder.Services.AddSingleton<IKafkaProducerService, KafkaProducerService>();
 builder.Services.AddSingleton<ApiEndpoints>();
 
 builder.Services.AddTransient<IBookRepository, BookRepository>();
