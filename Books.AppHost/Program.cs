@@ -22,6 +22,7 @@ var kafka = builder
     .WithEnvironment("KAFKA_CONTROLLER_LISTENER_NAMES", "CONTROLLER")
     .WithEnvironment("KAFKA_INTER_BROKER_LISTENER_NAME", "PLAINTEXT")
     .WithEnvironment("KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR", "1")
+    .WithEnvironment("KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS", "0")
     .WithEnvironment("KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR", "1")
     .WithEnvironment("KAFKA_TRANSACTION_STATE_LOG_MIN_ISR", "1")
     .WithEndpoint(9092, 9092, name: "broker")
