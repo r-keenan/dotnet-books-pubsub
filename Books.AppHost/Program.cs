@@ -30,7 +30,7 @@ var kafka = builder
 
 var controlCenter = builder
     .AddContainer("control-center", "docker.io/confluentinc/cp-enterprise-control-center")
-    .WithEnvironment("CONTROL_CENTER_BOOTSTRAP_SERVERS", "PLAINTEXT://kafka:9092")
+    .WithEnvironment("CONTROL_CENTER_BOOTSTRAP_SERVERS", "PLAINTEXT://0.0.0.0:9092")
     .WithEnvironment("CONTROL_CENTER_REPLICATION_FACTOR", "1")
     .WithEnvironment("CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS", "1")
     .WithEnvironment("CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS", "1")
