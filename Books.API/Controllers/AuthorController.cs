@@ -18,7 +18,12 @@ namespace Books.API.Controllers
         private readonly IKafkaProducerService _kafkaProducer;
         private readonly ApiEndpoints _apiEndpoints;
 
-        public AuthorController(IAuthorRepository authorRepository, IPublishEndpoint publishEndpoint, IKafkaProducerService kafkaProducer, ApiEndpoints apiEndpoints)
+        public AuthorController(
+            IAuthorRepository authorRepository,
+            IPublishEndpoint publishEndpoint,
+            IKafkaProducerService kafkaProducer,
+            ApiEndpoints apiEndpoints
+        )
         {
             _authorRepository = authorRepository;
             _publishEndpoint = publishEndpoint;
@@ -74,13 +79,12 @@ namespace Books.API.Controllers
             }
             catch (Exception ex)
             {
-               // This would get logged in Prod and not a writeline
+                // This would get logged in Prod and not a writeline
                 WriteLine(ex);
                 throw;
             }
 
             return NoContent();
-
         }
 
         [HttpPost]
@@ -97,7 +101,7 @@ namespace Books.API.Controllers
                 MiddleName = newAuthor.MiddleName,
                 LastName = newAuthor.LastName,
                 DateOfBirth = newAuthor.DateOfBirth,
-                WritingAwards = newAuthor.WritingAwards
+                WritingAwards = newAuthor.WritingAwards,
             };
 
             // Publish to RabbitMQ with MassTransit
@@ -109,6 +113,17 @@ namespace Books.API.Controllers
             return Created();
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAuthor(int id)
+        {
+            var author = await _authorRepository.Get(id);
+            if (author == null)
+                return NotFound();
+
+            await _authorRepository.Delete(id);
+
+            return NoContent();
+        }
 
         private async Task<bool> AuthorExistsAsync(int id)
         {

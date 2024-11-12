@@ -19,7 +19,12 @@ namespace MyApp.Namespace
         private readonly IKafkaProducerService _kafkaProducer;
         private readonly ApiEndpoints _apiEndpoints;
 
-        public PublisherController(IPublisherRepository publisherRepository, IPublishEndpoint publishEndpoint, IKafkaProducerService kafkaProducer, ApiEndpoints apiEndpoints)
+        public PublisherController(
+            IPublisherRepository publisherRepository,
+            IPublishEndpoint publishEndpoint,
+            IKafkaProducerService kafkaProducer,
+            ApiEndpoints apiEndpoints
+        )
         {
             _publisherRepository = publisherRepository;
             _publishEndpoint = publishEndpoint;
@@ -75,8 +80,8 @@ namespace MyApp.Namespace
             catch (Exception ex)
             {
                 // I would actually log this in prod and not writeline it
-               WriteLine(ex);
-               throw;
+                WriteLine(ex);
+                throw;
             }
 
             return NoContent();
@@ -93,12 +98,12 @@ namespace MyApp.Namespace
             {
                 Id = newPublisher.Id,
                 Name = newPublisher.Name,
-                Address1= newPublisher.Address1,
+                Address1 = newPublisher.Address1,
                 Address2 = newPublisher.Address2,
                 City = newPublisher.City,
                 State = newPublisher.State,
                 ZipCode = newPublisher.ZipCode,
-                DateFounded = newPublisher.DateFounded
+                DateFounded = newPublisher.DateFounded,
             };
 
             // Publish to RabbitMQ with MassTransit
@@ -108,6 +113,18 @@ namespace MyApp.Namespace
             await _kafkaProducer.ProduceAsync(KafkaTopics.PublishersTopic, newPublisher);
 
             return Created();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePublisher(int id)
+        {
+            var publisher = await _publisherRepository.Get(id);
+            if (publisher == null)
+                return NotFound();
+
+            await _publisherRepository.Delete(id);
+
+            return NoContent();
         }
 
         private async Task<bool> PublisherExistsAsync(int id)

@@ -20,7 +20,14 @@ namespace Books.API.Controllers
         private readonly IKafkaProducerService _kafkaProducer;
         private readonly ApiEndpoints _apiEndpoints;
 
-        public BookController(IBookRepository bookRepository, IAuthorRepository authorRepository, IPublisherRepository publisherRepository, IPublishEndpoint publishEndpoint, IKafkaProducerService kafkaProducer, ApiEndpoints apiEndpoints)
+        public BookController(
+            IBookRepository bookRepository,
+            IAuthorRepository authorRepository,
+            IPublisherRepository publisherRepository,
+            IPublishEndpoint publishEndpoint,
+            IKafkaProducerService kafkaProducer,
+            ApiEndpoints apiEndpoints
+        )
         {
             _bookRepository = bookRepository;
             _authorRepository = authorRepository;
@@ -91,7 +98,6 @@ namespace Books.API.Controllers
             return NoContent();
         }
 
-
         [HttpPost]
         public async Task<IActionResult> CreateBook(BookDto bookDto)
         {
@@ -107,7 +113,7 @@ namespace Books.API.Controllers
                 Genre = newBook.Genre,
                 DatePublished = newBook.DatePublished,
                 AuthorId = newBook.AuthorId,
-                PublisherId = newBook.PublisherId
+                PublisherId = newBook.PublisherId,
             };
 
             // Publish to RabbitMQ with MassTransit
@@ -118,11 +124,21 @@ namespace Books.API.Controllers
             return Created();
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBook(int id)
+        {
+            var book = await _bookRepository.Get(id);
+            if (book == null)
+                return NotFound();
+
+            await _bookRepository.Delete(id);
+
+            return NoContent();
+        }
 
         private async Task<bool> BookExistsAsync(int id)
         {
             return await _bookRepository.Exists(id);
         }
-
     }
 }
