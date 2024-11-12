@@ -115,7 +115,7 @@ namespace Books.API.Controllers
 
             await _kafkaProducer.ProduceAsync(KafkaTopics.BooksTopic, newBook);
 
-            return Ok();
+            return Created();
         }
 
 

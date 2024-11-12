@@ -107,7 +107,7 @@ namespace MyApp.Namespace
             // Publish to Kafka Topic
             await _kafkaProducer.ProduceAsync(KafkaTopics.PublishersTopic, newPublisher);
 
-            return Ok();
+            return Created();
         }
 
         private async Task<bool> PublisherExistsAsync(int id)

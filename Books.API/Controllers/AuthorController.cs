@@ -106,7 +106,7 @@ namespace Books.API.Controllers
             // Publish to Kafka Topic
             await _kafkaProducer.ProduceAsync(KafkaTopics.AuthorsTopic, newAuthor);
 
-            return Ok();
+            return Created();
         }
 
 
