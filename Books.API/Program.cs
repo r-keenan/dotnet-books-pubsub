@@ -4,6 +4,8 @@ using Books.API.Models;
 using Books.API.Repositories;
 using Books.API.Services;
 using MassTransit;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,18 @@ builder.Services.AddDbContext<BooksDbContext>(opt =>
     opt.UseNpgsql(connectionString);
 });
 builder.Services.AddControllers();
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+    options.ApiVersionReader = ApiVersionReader.Combine(
+        new UrlSegmentApiVersionReader(),
+        new HeaderApiVersionReader("x-api-version"),
+        new QueryStringApiVersionReader("api-version")
+        );
+});
+
 builder.Services.AddMassTransit(x =>
 {
     x.UsingRabbitMq();

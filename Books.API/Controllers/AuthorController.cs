@@ -47,7 +47,7 @@ namespace Books.API.Controllers
             return authorDto;
         }
 
-        [HttpPut("{id")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> PutAuthor(int id, AuthorDto dto)
         {
             if (id != dto.Id)
