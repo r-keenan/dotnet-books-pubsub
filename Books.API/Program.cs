@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-var connectionString = builder.Configuration.GetConnectionString("BooksDatabaseConnection");
+// This is referencing the books container of Postgres in .Net Aspire
+var connectionString = builder.Configuration.GetConnectionString("postgres-books");
 builder.Services.AddDbContext<BooksDbContext>(opt =>
 {
     opt.UseNpgsql(connectionString);
@@ -26,7 +26,7 @@ builder.Services.AddApiVersioning(options =>
         new UrlSegmentApiVersionReader(),
         new HeaderApiVersionReader("x-api-version"),
         new QueryStringApiVersionReader("api-version")
-        );
+    );
 });
 
 builder.Services.AddMassTransit(x =>
@@ -45,7 +45,6 @@ builder.Services.AddTransient<IBookRepository, BookRepository>();
 builder.Services.AddTransient<IAuthorRepository, AuthorRepository>();
 builder.Services.AddTransient<IPublisherRepository, PublisherRepository>();
 builder.Services.AddTransient(typeof(IHttpApiRepository<>), typeof(HttpApiRepository<>));
-
 
 var app = builder.Build();
 

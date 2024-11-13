@@ -4,8 +4,8 @@ using Books.Shared.Constants;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-builder.AddPostgres("postgres").WithPgAdmin().AddDatabase("books");
-builder.AddRabbitMQ("rabbitmq");
+var postgres = builder.AddPostgres("postgres").WithPgAdmin().AddDatabase("books");
+var rabbitmq = builder.AddRabbitMQ("rabbitmq");
 var kafka = builder
     // AddContainer automatically uses the latest tag. you can specify a specific tag as another parameter if you want to
     .AddContainer("kafka", "docker.io/confluentinc/cp-kafka")
@@ -51,6 +51,10 @@ var controlCenter = builder
     .WithEndpoint(9021, 9021, name: "control-center")
     .WithReference(kafka.GetEndpoint("external")); // Expose UI port
 
-builder.AddProject<Projects.Books_API>("books-api").WithReference(kafka.GetEndpoint("broker"));
+builder
+    .AddProject<Projects.Books_API>("books-api")
+    .WithReference(kafka.GetEndpoint("broker"))
+    .WithReference(postgres)
+    .WithReference(rabbitmq);
 
 builder.Build().Run();
