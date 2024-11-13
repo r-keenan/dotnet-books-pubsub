@@ -5,7 +5,7 @@ using Books.Shared.Constants;
 var builder = DistributedApplication.CreateBuilder(args);
 
 var postgres = builder.AddPostgres("postgres").WithPgAdmin().AddDatabase("books");
-var rabbitmq = builder.AddRabbitMQ("rabbitmq");
+var rabbitmq = builder.AddRabbitMQ("rabbitmq").WithManagementPlugin();
 var kafka = builder
     // AddContainer automatically uses the latest tag. you can specify a specific tag as another parameter if you want to
     .AddContainer("kafka", "docker.io/confluentinc/cp-kafka")
