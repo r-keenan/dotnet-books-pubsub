@@ -7,6 +7,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 var postgres = builder
     .AddPostgres("postgres")
     .WithEndpoint(5432, 5432, name: "postgresql")
+    .WithVolume("postgres_data", "/var/lib/postgresql/data")
     .WithPgAdmin()
     .AddDatabase("books");
 var rabbitmq = builder.AddRabbitMQ("rabbitmq").WithManagementPlugin();

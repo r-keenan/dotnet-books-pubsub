@@ -56,6 +56,21 @@ public class BookRepository : IBookRepository
         return entity;
     }
 
+    public async Task<List<Book>> GetAllWithDetails()
+    {
+        var entities = await _context
+            .Books.Include(b => b.Author)
+            .Include(b => b.Publisher)
+            .ToListAsync();
+
+        if (entities == null)
+        {
+            return [];
+        }
+
+        return entities;
+    }
+
     public async Task<List<Book>> GetAll()
     {
         return await _context.Books.ToListAsync();

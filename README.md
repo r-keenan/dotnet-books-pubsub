@@ -57,3 +57,11 @@ Open the file, copy in the json object below, and update it with your actual con
 ```
 
 Once you have your connection string set, restart the .Net Aspire project, and then the project will work.
+
+### Seed Data
+
+If you wish to run the migrations, `cd` into the Books.API directory and run the following command while Books.AppHost is running
+
+```bash
+dotnet ef database update
+```
