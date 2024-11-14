@@ -4,7 +4,11 @@ using Books.Shared.Constants;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var postgres = builder.AddPostgres("postgres").WithPgAdmin().AddDatabase("books");
+var postgres = builder
+    .AddPostgres("postgres")
+    .WithEndpoint(5432, 5432, name: "postgresql")
+    .WithPgAdmin()
+    .AddDatabase("books");
 var rabbitmq = builder.AddRabbitMQ("rabbitmq").WithManagementPlugin();
 var kafka = builder
     // AddContainer automatically uses the latest tag. you can specify a specific tag as another parameter if you want to
