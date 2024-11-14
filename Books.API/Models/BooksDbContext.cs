@@ -63,6 +63,27 @@ public class BooksDbContext : DbContext
                     WritingAwards = Array.Empty<string>(),
                     DateCreated = DateTime.UtcNow,
                     DateModified = DateTime.UtcNow,
+                },
+                new Author
+                {
+                    Id = 5,
+                    FirstName = "Joe",
+                    LastName = "Haldeman",
+                    DateOfBirth = new DateOnly(1943, 6, 9),
+                    WritingAwards = Array.Empty<string>(),
+                    DateCreated = DateTime.UtcNow,
+                    DateModified = DateTime.UtcNow,
+                },
+                new Author
+                {
+                    Id = 6,
+                    FirstName = "Robert",
+                    MiddleName = "Anton",
+                    LastName = "Wilson",
+                    DateOfBirth = new DateOnly(1932, 1, 18),
+                    WritingAwards = Array.Empty<string>(),
+                    DateCreated = DateTime.UtcNow,
+                    DateModified = DateTime.UtcNow,
                 }
             );
 
@@ -95,6 +116,20 @@ public class BooksDbContext : DbContext
                 {
                     Id = 4,
                     Name = "G. P. Puntnam's Sons",
+                    DateCreated = DateTime.UtcNow,
+                    DateModified = DateTime.UtcNow,
+                },
+                new Publisher
+                {
+                    Id = 5,
+                    Name = "St. Martin's Press",
+                    DateCreated = DateTime.UtcNow,
+                    DateModified = DateTime.UtcNow,
+                },
+                new Publisher
+                {
+                    Id = 6,
+                    Name = "Dell Publishing",
                     DateCreated = DateTime.UtcNow,
                     DateModified = DateTime.UtcNow,
                 }
@@ -181,6 +216,36 @@ public class BooksDbContext : DbContext
                     AuthorId = 4,
                     PublisherId = 4,
                     DatePublished = new DateOnly(1966, 6, 2),
+                    DateCreated = DateTime.UtcNow,
+                    DateModified = DateTime.UtcNow,
+                },
+                new Book
+                {
+                    Id = 9,
+                    Title = "The Forever War",
+                    AuthorId = 5,
+                    PublisherId = 5,
+                    DatePublished = new DateOnly(1974, 1, 1),
+                    DateCreated = DateTime.UtcNow,
+                    DateModified = DateTime.UtcNow,
+                },
+                new Book
+                {
+                    Id = 10,
+                    Title = "The Illuminatus! Trilogy",
+                    AuthorId = 6,
+                    PublisherId = 6,
+                    DatePublished = new DateOnly(1975, 1, 1),
+                    DateCreated = DateTime.UtcNow,
+                    DateModified = DateTime.UtcNow,
+                },
+                new Book
+                {
+                    Id = 11,
+                    Title = "Schrödinger's Cat Trilogy",
+                    AuthorId = 6,
+                    PublisherId = 6,
+                    DatePublished = new DateOnly(1988, 1, 1),
                     DateCreated = DateTime.UtcNow,
                     DateModified = DateTime.UtcNow,
                 }
