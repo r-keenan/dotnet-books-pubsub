@@ -44,7 +44,7 @@ namespace Books.API.Controllers
             return await _bookRepository.GetAll();
         }
 
-        [HttpGet("{id}/details")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<BookDto>> GetBook(int id)
         {
             var book = await _bookRepository.Get(id);
