@@ -5,10 +5,7 @@ namespace Books.API.Models;
 public class BooksDbContext : DbContext
 {
     public BooksDbContext(DbContextOptions<BooksDbContext> options)
-        : base(options)
-    {
-        Database.EnsureCreated();
-    }
+        : base(options) { }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
