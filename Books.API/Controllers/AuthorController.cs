@@ -32,6 +32,7 @@ namespace Books.API.Controllers
         }
 
         [HttpGet]
+        // TODO: Add Pagination to endpoint
         public async Task<ActionResult<IEnumerable<Author>>> GetAuthors()
         {
             return await _authorRepository.GetAll();

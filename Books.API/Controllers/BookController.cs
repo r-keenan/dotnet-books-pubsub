@@ -38,13 +38,14 @@ namespace Books.API.Controllers
         }
 
         [HttpGet]
+        // TODO: Add Pagination to endpoint
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
             return await _bookRepository.GetAll();
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<BookDetailsDto>> GetBook(int id)
+        [HttpGet("{id}/details")]
+        public async Task<ActionResult<BookDto>> GetBook(int id)
         {
             var book = await _bookRepository.Get(id);
 
@@ -53,13 +54,22 @@ namespace Books.API.Controllers
                 return NotFound();
             }
 
-            var publisher = await _publisherRepository.Get(book.PublisherId);
+            var bookDto = book.ToDto();
 
-            var author = await _authorRepository.Get(book.AuthorId);
+            return bookDto;
+        }
+
+        [HttpGet("{id}/details")]
+        public async Task<ActionResult<BookDetailsDto>> GetBookWithDetails(int id)
+        {
+            var book = await _bookRepository.GetWithDetails(id);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
 
             var bookDto = book.ToDetailsDto();
-            bookDto.Author = author.ToDto();
-            bookDto.Publisher = publisher.ToDto();
 
             return bookDto;
         }

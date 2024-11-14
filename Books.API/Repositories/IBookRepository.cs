@@ -3,6 +3,7 @@
 public interface IBookRepository
 {
     Task<Book> Get(int id);
+    Task<Book> GetWithDetails(int id);
     Task<List<Book>> GetAll();
     Task<Book> Add(Book book);
     Task<bool> Delete(int id);

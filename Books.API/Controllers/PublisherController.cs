@@ -33,6 +33,7 @@ namespace MyApp.Namespace
         }
 
         [HttpGet]
+        // TODO: Add Pagination to endpoint
         public async Task<ActionResult<IEnumerable<Publisher>>> GetPublishers()
         {
             return await _publisherRepository.GetAll();

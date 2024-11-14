@@ -11,6 +11,7 @@ public class BookRepository : IBookRepository
     {
         _context = context;
     }
+
     public async Task<Book> Add(Book book)
     {
         var result = await _context.AddAsync(book);
@@ -35,6 +36,19 @@ public class BookRepository : IBookRepository
     public async Task<Book> Get(int id)
     {
         var entity = await _context.Books.FindAsync(id);
+        if (entity == null)
+        {
+            throw new KeyNotFoundException($"Book with id {id} not found");
+        }
+        return entity;
+    }
+
+    public async Task<Book> GetWithDetails(int id)
+    {
+        var entity = await _context
+            .Books.Include(b => b.Author)
+            .Include(b => b.Publisher)
+            .FirstOrDefaultAsync(b => b.Id == id);
         if (entity == null)
         {
             throw new KeyNotFoundException($"Book with id {id} not found");
