@@ -24,7 +24,7 @@ public class Author : BaseModel
     public string[] WritingAwards { get; set; } = [];
 
     // Need for Entity Framework Core migrations
-    protected Author() { }
+    public Author() { }
 
     public Author(AuthorDto dto)
     {

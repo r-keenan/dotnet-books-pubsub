@@ -16,7 +16,7 @@ public class Book : BaseModel
 
     [Range(1, 10_000, ErrorMessage = "PageLength must be between 1 and 10,000 characters")]
     public int PageLength { get; set; }
-    public DateTime DatePublished { get; set; }
+    public DateOnly DatePublished { get; set; }
     public int AuthorId { get; set; }
 
     [Required]
@@ -27,7 +27,7 @@ public class Book : BaseModel
     public Publisher Publisher { get; set; }
 
     // Need for Entity Framework Core migrations
-    protected Book() { }
+    public Book() { }
 
     public Book(BookDto dto)
     {

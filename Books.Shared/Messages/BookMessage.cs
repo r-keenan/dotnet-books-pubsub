@@ -8,7 +8,7 @@ public class BookMessage
     public string Title { get; set; } = "";
     public int PageLength { get; set; }
     public BookGenre Genre { get; set; } = BookGenre.UNKNOWN;
-    public DateTime DatePublished { get; set; }
+    public DateOnly DatePublished { get; set; }
     public int AuthorId { get; set; }
     public int PublisherId { get; set; }
 }

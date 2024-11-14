@@ -34,7 +34,7 @@ public class Publisher : BaseModel
     public DateTime DateFounded { get; set; }
 
     // Need for Entity Framework Core migrations
-    protected Publisher() { }
+    public Publisher() { }
 
     public Publisher(PublisherDto dto)
     {
