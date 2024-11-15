@@ -3,6 +3,7 @@
 ## Technologies used
 
 - .Net 8 WebApi
+- .Net 8 Console Apps - RabbitMQ consumers
 - .Net Aspire
 - Entity Framework Core
 - Postgres
