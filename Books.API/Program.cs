@@ -66,7 +66,7 @@ builder
     .AddValidatorsFromAssemblyContaining<BookValidator>();
 
 builder.Services.AddHttpClient();
-builder.Services.Configure<KafkaProducerConfig>(builder.Configuration.GetSection("KafkaProducer"));
+builder.Services.Configure<KafkaProducerConfig>(builder.Configuration.GetSection("Kafka"));
 builder.Services.AddSingleton<IKafkaProducerService, KafkaProducerService>();
 builder.Services.AddSingleton<ApiEndpoints>();
 
