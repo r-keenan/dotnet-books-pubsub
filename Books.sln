@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Shared", "Books.Share
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.AppHost", "Books.AppHost\Books.AppHost.csproj", "{703585AC-8A0C-46CA-9DC0-B26C32223FFF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.RabbitMq.CreatedPublisherConsumer", "Books.RabbitMq.CreatedPublisherConsumer\Books.RabbitMq.CreatedPublisherConsumer.csproj", "{C6988F48-79EE-4F9B-8E79-34938C251F8B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{703585AC-8A0C-46CA-9DC0-B26C32223FFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{703585AC-8A0C-46CA-9DC0-B26C32223FFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{703585AC-8A0C-46CA-9DC0-B26C32223FFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6988F48-79EE-4F9B-8E79-34938C251F8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6988F48-79EE-4F9B-8E79-34938C251F8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6988F48-79EE-4F9B-8E79-34938C251F8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6988F48-79EE-4F9B-8E79-34938C251F8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -12,7 +12,7 @@ var postgres = builder
     .AddDatabase("books");
 var rabbitmq = builder
     .AddRabbitMQ("rabbitmq")
-    .WithManagementPlugin()
+    .WithManagementPlugin(port: 15762)
     .WithEndpoint(5762, 5672, name: "rabbitmq");
 var kafka = builder
     // AddContainer automatically uses the latest tag. you can specify a specific tag as another parameter if you want to
@@ -63,6 +63,12 @@ builder
     .AddProject<Projects.Books_API>("books-api")
     .WithReference(kafka.GetEndpoint("broker"))
     .WithReference(postgres)
+    .WithReference(rabbitmq);
+
+builder
+    .AddProject<Projects.Books_RabbitMq_CreatedPublisherConsumer>(
+        "rabbit-mq-created-publisher-consumer"
+    )
     .WithReference(rabbitmq);
 
 builder.Build().Run();
