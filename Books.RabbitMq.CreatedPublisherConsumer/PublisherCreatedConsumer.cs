@@ -6,10 +6,11 @@ namespace Books.RabbitMq.CreatedPublisherConsumer
 {
     public class PublisherCreatedConsumer : IConsumer<PublisherMessage>
     {
-        public async Task Consume(ConsumeContext<PublisherMessage> context)
+        public Task Consume(ConsumeContext<PublisherMessage> context)
         {
             var jsonMessage = JsonConvert.SerializeObject(context.Message);
             WriteLine($"PublisherCreated message: {jsonMessage}");
+            return Task.CompletedTask;
         }
     }
 }

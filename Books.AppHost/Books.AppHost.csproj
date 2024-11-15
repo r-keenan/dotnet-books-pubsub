@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="../Books.API/Books.API.csproj" />
     <ProjectReference Include="../Books.RabbitMq.CreatedPublisherConsumer/Books.RabbitMq.CreatedPublisherConsumer.csproj" />
+    <ProjectReference Include="../Books.RabbitMq.CreatedBookConsumer/Books.RabbitMq.CreatedBookConsumer.csproj" />
     <ProjectReference Include="../Books.Shared/Books.Shared.csproj" IsAspireProjectResource="false" />
   </ItemGroup>
 

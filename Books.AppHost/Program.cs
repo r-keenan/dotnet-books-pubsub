@@ -59,16 +59,21 @@ var controlCenter = builder
     .WithEndpoint(9021, 9021, name: "control-center")
     .WithReference(kafka.GetEndpoint("external")); // Expose UI port
 
+// Web API
 builder
     .AddProject<Projects.Books_API>("books-api")
     .WithReference(kafka.GetEndpoint("broker"))
     .WithReference(postgres)
     .WithReference(rabbitmq);
 
+// RabbitMQ Consumers
 builder
     .AddProject<Projects.Books_RabbitMq_CreatedPublisherConsumer>(
         "rabbit-mq-created-publisher-consumer"
     )
+    .WithReference(rabbitmq);
+builder
+    .AddProject<Projects.Books_RabbitMq_CreatedBookConsumer>("rabbit-mq-created-book-consumer")
     .WithReference(rabbitmq);
 
 builder.Build().Run();
