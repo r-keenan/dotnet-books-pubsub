@@ -75,5 +75,8 @@ builder
 builder
     .AddProject<Projects.Books_RabbitMq_CreatedBookConsumer>("rabbit-mq-created-book-consumer")
     .WithReference(rabbitmq);
+builder
+    .AddProject<Projects.Books_RabbitMq_CreatedAuthorConsumer>("rabbit-mq-created-author-consumer")
+    .WithReference(rabbitmq);
 
 builder.Build().Run();

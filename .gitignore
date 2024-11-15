@@ -489,3 +489,4 @@ $RECYCLE.BIN/
 Books.API/appsettings.Development.json
 Books.RabbitMq.CreatedPublisherConsumer/appsettings.Development.json
 Books.RabbitMq.CreatedBookConsumer/appsettings.Development.json
+Books.RabbitMq.CreatedAuthorConsumer/appsettings.Development.json

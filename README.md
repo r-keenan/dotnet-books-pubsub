@@ -57,6 +57,22 @@ Open the file, copy in the json object below, and update it with your actual con
 }
 ```
 
+You will also have to add an `appsettings.Development.json` file to the root of each RabbitMQ consumer apps as well. The file contents should look like this:
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "rabbitmq": "amqp://<user-name>:<password>@localhost:5672"
+  }
+}
+```
+
 Once you have your connection string set, restart the .Net Aspire project, and then the project will work.
 
 ### Seed Data
