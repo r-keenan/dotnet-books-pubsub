@@ -1,8 +1,11 @@
 using Books.API;
 using Books.API.Constants;
 using Books.API.Models;
+using Books.API.Models.Validators;
 using Books.API.Repositories;
 using Books.API.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -40,6 +43,13 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Books API", Version = "v1" });
 });
+builder
+    .Services.AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters()
+    .AddValidatorsFromAssemblyContaining<AuthorValidator>()
+    .AddValidatorsFromAssemblyContaining<PublisherValidator>()
+    .AddValidatorsFromAssemblyContaining<BookValidator>();
+
 builder.Services.AddHttpClient();
 builder.Services.Configure<KafkaProducerConfig>(builder.Configuration.GetSection("KafkaProducer"));
 builder.Services.AddSingleton<IKafkaProducerService, KafkaProducerService>();
