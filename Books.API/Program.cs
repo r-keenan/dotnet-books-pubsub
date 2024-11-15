@@ -35,7 +35,22 @@ builder.Services.AddApiVersioning(options =>
 
 builder.Services.AddMassTransit(x =>
 {
-    x.UsingRabbitMq();
+    x.UsingRabbitMq(
+        (context, cfg) =>
+        {
+            var rabbitConfig = builder.Configuration.GetConnectionString("rabbitmq");
+            cfg.Host(rabbitConfig);
+
+            cfg.UseMessageRetry(r =>
+                r.Intervals(
+                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromSeconds(5),
+                    TimeSpan.FromSeconds(10)
+                )
+            );
+            cfg.ConfigureEndpoints(context);
+        }
+    );
 });
 
 builder.Services.AddEndpointsApiExplorer();

@@ -82,7 +82,6 @@ public class BooksDbContext : DbContext
 
         if (_env.IsDevelopment())
         {
-            // TODO: ONLY SEED THIS IN DEV ENV
             // Seed Authors
             modelBuilder
                 .Entity<Author>()

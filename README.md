@@ -40,7 +40,7 @@ In the root of the Books.API project, run the following command.
 touch appsettings.Development.json
 ```
 
-Open the file, copy in the json object below, and update it with your actual connection string.
+Open the file, copy in the json object below, and update it with your actual connection string for Postgres and RabbitMQ.
 
 ```json
 {
@@ -51,7 +51,8 @@ Open the file, copy in the json object below, and update it with your actual con
     }
   },
   "ConnectionStrings": {
-    "postgres-books": "<connection string>"
+    "postgres-books": "<connection string>",
+    "rabbitmq": "amqp://<user-name>:<password>@localhost:5672"
   }
 }
 ```
