@@ -29,7 +29,7 @@ dotnet run
 
 ### Access the .Net Aspire Dashboard
 
-Once this is running, go to [https://localhost:17298](localhost:17298)in a browser to visit the .Net Aspire dashboard.
+Once this is running, go to [https://localhost:17298](https://localhost:17298) in a browser to visit the .Net Aspire dashboard.
 
 ### Add appsettings.Development.json file
 
