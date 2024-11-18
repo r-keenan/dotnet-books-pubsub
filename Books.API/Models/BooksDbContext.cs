@@ -158,6 +158,7 @@ public class BooksDbContext : DbContext
                     {
                         Id = 1,
                         Name = "Penguin Books",
+                        DateFounded = DateOnly.FromDateTime(DateTime.Today),
                         DateCreated = DateTime.UtcNow,
                         DateModified = DateTime.UtcNow,
                     },
@@ -165,6 +166,7 @@ public class BooksDbContext : DbContext
                     {
                         Id = 2,
                         Name = "McGraw-Hill",
+                        DateFounded = DateOnly.FromDateTime(DateTime.Today),
                         DateCreated = DateTime.UtcNow,
                         DateModified = DateTime.UtcNow,
                     },
@@ -172,6 +174,7 @@ public class BooksDbContext : DbContext
                     {
                         Id = 3,
                         Name = "The Russian Messenger",
+                        DateFounded = DateOnly.FromDateTime(DateTime.Today),
                         DateCreated = DateTime.UtcNow,
                         DateModified = DateTime.UtcNow,
                     },
@@ -179,6 +182,7 @@ public class BooksDbContext : DbContext
                     {
                         Id = 4,
                         Name = "G. P. Puntnam's Sons",
+                        DateFounded = DateOnly.FromDateTime(DateTime.Today),
                         DateCreated = DateTime.UtcNow,
                         DateModified = DateTime.UtcNow,
                     },
@@ -186,6 +190,7 @@ public class BooksDbContext : DbContext
                     {
                         Id = 5,
                         Name = "St. Martin's Press",
+                        DateFounded = DateOnly.FromDateTime(DateTime.Today),
                         DateCreated = DateTime.UtcNow,
                         DateModified = DateTime.UtcNow,
                     },
@@ -193,6 +198,7 @@ public class BooksDbContext : DbContext
                     {
                         Id = 6,
                         Name = "Dell Publishing",
+                        DateFounded = DateOnly.FromDateTime(DateTime.Today),
                         DateCreated = DateTime.UtcNow,
                         DateModified = DateTime.UtcNow,
                     }

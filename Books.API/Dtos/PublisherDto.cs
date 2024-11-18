@@ -11,5 +11,5 @@ public class PublisherDto
     public string City { get; set; } = "";
     public State State { get; set; }
     public string ZipCode { get; set; } = "";
-    public DateTime DateFounded { get; set; }
+    public DateOnly DateFounded { get; set; }
 }
