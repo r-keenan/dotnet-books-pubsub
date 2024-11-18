@@ -9,6 +9,8 @@
   <ItemGroup>
     <PackageReference Include="Aspire.RabbitMQ.Client" Version="8.2.2" />
     <PackageReference Include="Confluent.Kafka" Version="2.6.0" />
+    <PackageReference Include="Confluent.SchemaRegistry" Version="2.6.0" />
+    <PackageReference Include="Confluent.SchemaRegistry.Serdes.Avro" Version="2.6.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
     <PackageReference Include="MassTransit" Version="8.3.0" />
