@@ -74,9 +74,41 @@ public class KafkaProducerService : IKafkaProducerService, IDisposable
 
             foreach (var prop in avroObj)
             {
-                var value = prop.Value is JsonElement element
-                    ? element.ToString()
-                    : prop.Value?.ToString();
+                object? value;
+                if (prop.Value is JsonElement element)
+                {
+                    var fieldSchema = avroSchema.Fields.First(f => f.Name == prop.Key).Schema;
+                    value = element.ValueKind switch
+                    {
+                        JsonValueKind.Number => fieldSchema.Tag switch
+                        {
+                            Avro.Schema.Type.Int => element.TryGetInt32(out var intVal)
+                                ? intVal
+                                : (int)element.GetDouble(),
+                            Avro.Schema.Type.Long => element.TryGetInt64(out var longVal)
+                                ? longVal
+                                : (long)element.GetDouble(),
+                            Avro.Schema.Type.Double => element.GetDouble(),
+                            _ => element.ToString(),
+                        },
+                        JsonValueKind.String => fieldSchema.Tag switch
+                        {
+                            Avro.Schema.Type.Long
+                                when DateTime.TryParse(element.GetString(), out var date) => (
+                                (DateTimeOffset)date
+                            ).ToUnixTimeMilliseconds(),
+                            _ => element.GetString(),
+                        },
+                        JsonValueKind.True => true,
+                        JsonValueKind.False => false,
+                        JsonValueKind.Null => null,
+                        _ => element.ToString(),
+                    };
+                }
+                else
+                {
+                    value = prop.Value;
+                }
                 genericRecord.Add(prop.Key, value);
             }
 
@@ -111,8 +143,34 @@ public class AvroSchema<T>
     public Field[] fields =>
         typeof(T)
             .GetProperties()
-            .Select(p => new Field { name = p.Name, type = "string" })
+            .Select(p => new Field
+            {
+                name = p.Name,
+                type = MapCSharpTypeToAvroType(p.PropertyType),
+            })
             .ToArray();
+
+    private string MapCSharpTypeToAvroType(Type type)
+    {
+        if (type == typeof(string))
+            return "string";
+        if (type == typeof(int))
+            return "int";
+        if (type == typeof(long))
+            return "long";
+        if (type == typeof(float))
+            return "float";
+        if (type == typeof(double))
+            return "double";
+        if (type == typeof(bool))
+            return "boolean";
+        if (type == typeof(DateTime))
+            return "long";
+        if (type == typeof(Guid))
+            return "string";
+
+        return "string";
+    }
 
     public class Field
     {
