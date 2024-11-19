@@ -32,6 +32,8 @@ await Host.CreateDefaultBuilder(args)
                 sp.GetRequiredService<IOptions<KafkaConsumerConfig>>(),
                 KafkaTopics.PublishersTopic
             ));
+
+            services.AddHostedService<KafkaConsumerService>();
         }
     )
     .Build()
