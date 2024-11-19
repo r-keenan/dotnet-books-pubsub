@@ -32,6 +32,8 @@ public class KafkaProducerService : IKafkaProducerService, IDisposable
         var schemaRegistryConfig = new SchemaRegistryConfig
         {
             Url = config.Value.SchemaRegistryUrl,
+            RequestTimeoutMs = 5000,
+            MaxCachedSchemas = 10,
         };
 
         var avroSerializerConfig = new AvroSerializerConfig
