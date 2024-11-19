@@ -124,4 +124,18 @@ builder
     .WithReference(rabbitmq)
     .WaitFor(rabbitmq);
 
+// Kafka Consumers
+builder
+    .AddProject<Projects.Books_Kafka_CreatedAuthorConsumer>("kafka-created-publisher-consumer")
+    .WithReference(kafka.GetEndpoint("broker"))
+    .WaitFor(kafka);
+builder
+    .AddProject<Projects.Books_Kafka_CreatedBookConsumer>("kafka-created-book-consumer")
+    .WithReference(kafka.GetEndpoint("broker"))
+    .WaitFor(kafka);
+builder
+    .AddProject<Projects.Books_Kafka_CreatedPublisherConsumer>("kafka-created-publisher-consumer")
+    .WithReference(kafka.GetEndpoint("broker"))
+    .WaitFor(kafka);
+
 builder.Build().Run();

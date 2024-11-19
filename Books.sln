@@ -15,6 +15,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.RabbitMq.CreatedBookC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.RabbitMq.CreatedAuthorConsumer", "Books.RabbitMq.CreatedAuthorConsumer\Books.RabbitMq.CreatedAuthorConsumer.csproj", "{9806166D-AB2C-42CC-9FDA-184CCCBBB98C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Kafka.CreatedAuthorConsumer", "Books.Kafka.CreatedAuthorConsumer\Books.Kafka.CreatedAuthorConsumer.csproj", "{0AE1AF44-7EB9-4D08-9F05-FA37D0B3CE6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Kafka.CreatedPublisherConsumer", "Books.Kafka.CreatedPublisherConsumer\Books.Kafka.CreatedPublisherConsumer.csproj", "{86AA230C-C527-4E12-A2DE-A8F78EEE9019}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Kafka.CreatedBookConsumer", "Books.Kafka.CreatedBookConsumer\Books.Kafka.CreatedBookConsumer.csproj", "{B9BDD913-547D-431B-AA5D-62265B02CEDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +54,17 @@ Global
 		{9806166D-AB2C-42CC-9FDA-184CCCBBB98C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9806166D-AB2C-42CC-9FDA-184CCCBBB98C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9806166D-AB2C-42CC-9FDA-184CCCBBB98C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AE1AF44-7EB9-4D08-9F05-FA37D0B3CE6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AE1AF44-7EB9-4D08-9F05-FA37D0B3CE6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AE1AF44-7EB9-4D08-9F05-FA37D0B3CE6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AE1AF44-7EB9-4D08-9F05-FA37D0B3CE6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86AA230C-C527-4E12-A2DE-A8F78EEE9019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86AA230C-C527-4E12-A2DE-A8F78EEE9019}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86AA230C-C527-4E12-A2DE-A8F78EEE9019}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86AA230C-C527-4E12-A2DE-A8F78EEE9019}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9BDD913-547D-431B-AA5D-62265B02CEDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9BDD913-547D-431B-AA5D-62265B02CEDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9BDD913-547D-431B-AA5D-62265B02CEDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9BDD913-547D-431B-AA5D-62265B02CEDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
