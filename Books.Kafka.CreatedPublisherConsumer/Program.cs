@@ -13,7 +13,7 @@ await Host.CreateDefaultBuilder(args)
         {
             config
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false)
+                .AddJsonFile("appsettings.json", optional: true)
                 .AddJsonFile($"appsettings.Development.json", optional: true)
                 .AddEnvironmentVariables();
         }
