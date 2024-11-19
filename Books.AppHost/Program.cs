@@ -126,7 +126,7 @@ builder
 
 // Kafka Consumers
 builder
-    .AddProject<Projects.Books_Kafka_CreatedAuthorConsumer>("kafka-created-publisher-consumer")
+    .AddProject<Projects.Books_Kafka_CreatedAuthorConsumer>("kafka-created-author-consumer")
     .WithReference(kafka.GetEndpoint("broker"))
     .WaitFor(kafka);
 builder
