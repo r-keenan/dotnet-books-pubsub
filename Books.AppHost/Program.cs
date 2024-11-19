@@ -77,7 +77,7 @@ var schemaRegistry = builder
     .WithEnvironment("SCHEMA_REGISTRY_DEBUG", "true")
     .WithEnvironment("SCHEMA_REGISTRY_KAFKASTORE_INIT_TIMEOUT_MS", "60000")
     .WithEnvironment("SCHEMA_REGISTRY_KAFKASTORE_TIMEOUT_MS", "60000")
-    .WithEndpoint(8081, 8081, "schema-registry")
+    .WithEndpoint(8081, 8081, name: "schema-registry", scheme: "http")
     .WithReference(kafka.GetEndpoint("broker"))
     .WaitFor(kafka);
 
