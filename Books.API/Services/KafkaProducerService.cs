@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Avro;
 using Avro.Generic;
 using Books.API.Services;
 using Confluent.Kafka;
@@ -33,6 +34,12 @@ public class KafkaProducerService : IKafkaProducerService, IDisposable
             Url = config.Value.SchemaRegistryUrl,
         };
 
+        var avroSerializerConfig = new AvroSerializerConfig
+        {
+            AutoRegisterSchemas = true,
+            SubjectNameStrategy = SubjectNameStrategy.Topic,
+        };
+
         _schemaRegistry = new CachedSchemaRegistryClient(schemaRegistryConfig);
         _producer = new ProducerBuilder<string, GenericRecord>(producerConfig)
             .SetValueSerializer(new AvroSerializer<GenericRecord>(_schemaRegistry))
@@ -44,16 +51,31 @@ public class KafkaProducerService : IKafkaProducerService, IDisposable
     {
         try
         {
-            // Convert message to a GenericRecord using Avro schema
-            var schema = await _schemaRegistry.GetLatestSchemaAsync($"{topic}-value");
-            var avroSchema = (Avro.RecordSchema)Avro.Schema.Parse(schema.SchemaString);
+            var avroSchema = (RecordSchema)
+                Avro.Schema.Parse(JsonSerializer.Serialize(new AvroSchema<T>()));
+            var subject = $"{topic}-value";
+            try
+            {
+                await _schemaRegistry.GetLatestSchemaAsync(subject);
+            }
+            catch (SchemaRegistryException)
+            {
+                var schemaString = avroSchema.ToString();
+                await _schemaRegistry.RegisterSchemaAsync(
+                    subject,
+                    new Confluent.SchemaRegistry.Schema(schemaString, SchemaType.Avro)
+                );
+            }
             var genericRecord = new GenericRecord(avroSchema);
             var jsonString = JsonSerializer.Serialize(message);
             var avroObj = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonString);
 
             foreach (var prop in avroObj)
             {
-                genericRecord.Add(prop.Key, prop.Value);
+                var value = prop.Value is JsonElement element
+                    ? element.ToString()
+                    : prop.Value?.ToString();
+                genericRecord.Add(prop.Key, value);
             }
 
             var kafkaMessage = new Message<string, GenericRecord>
@@ -77,5 +99,22 @@ public class KafkaProducerService : IKafkaProducerService, IDisposable
     public void Dispose()
     {
         _producer?.Dispose();
+    }
+}
+
+public class AvroSchema<T>
+{
+    public string type => "record";
+    public string name => typeof(T).Name;
+    public Field[] fields =>
+        typeof(T)
+            .GetProperties()
+            .Select(p => new Field { name = p.Name, type = "string" })
+            .ToArray();
+
+    public class Field
+    {
+        public string name { get; set; }
+        public string type { get; set; }
     }
 }

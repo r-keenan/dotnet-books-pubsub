@@ -24,7 +24,7 @@ var kafka = builder
     .WithEnvironment("KAFKA_NODE_ID", "1")
     .WithEnvironment("KAFKA_HEAP_OPTS", "-Xmx512M -Xms512M")
     .WithEnvironment("KAFKA_MIN_INSYNC_REPLICAS", "1")
-    .WithEnvironment("KAFKA_AUTO_CREATE_TOPICS_ENABLE", "true")
+    //.WithEnvironment("KAFKA_AUTO_CREATE_TOPICS_ENABLE", "true")
     .WithEnvironment("KAFKA_NUM_PARTITIONS", "1")
     .WithEnvironment("KAFKA_DEFAULT_REPLICATION_FACTOR", "1")
     .WithEnvironment("KAFKA_PROCESS_ROLES", "controller,broker")
@@ -59,12 +59,24 @@ var kafka = builder
     .WithVolume("kafka_data", "/var/lib/kafka/data")
     .WithVolume("kafka_metadata", "/var/lib/kafka/metadata");
 
+var kafkaUi = builder
+    .AddContainer("kafka-ui", "provectuslabs/kafka-ui")
+    .WithEnvironment("KAFKA_CLUSTERS_0_NAME", "local")
+    .WithEnvironment("KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS", "kafka:29092")
+    .WithEndpoint(8080, 8080, name: "kafka-ui", scheme: "http")
+    .WithReference(kafka.GetEndpoint("broker"));
+
 var schemaRegistry = builder
     .AddContainer("schema-registry", "confluentinc/cp-schema-registry")
     .WithEnvironment("SCHEMA_REGISTRY_HOST_NAME", "schema-registry")
     .WithEnvironment("SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL", "PLAINTEXT")
-    .WithEnvironment("SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS", "PLAINTEXT://localhost:29092")
+    .WithEnvironment("SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS", "PLAINTEXT://kafka:29092")
+    .WithEnvironment("SCHEMA_REGISTRY_RETRY_ON_START", "true")
     .WithEnvironment("SCHEMA_REGISTRY_LISTENERS", "http://0.0.0.0:8081")
+    .WithEnvironment("SCHEMA_REGISTRY_KAFKASTORE_TOPIC", "_schemas")
+    .WithEnvironment("SCHEMA_REGISTRY_DEBUG", "true")
+    .WithEnvironment("SCHEMA_REGISTRY_KAFKASTORE_INIT_TIMEOUT_MS", "60000")
+    .WithEnvironment("SCHEMA_REGISTRY_KAFKASTORE_TIMEOUT_MS", "60000")
     .WithEndpoint(8081, 8081, "schema-registry")
     .WithReference(kafka.GetEndpoint("broker"))
     .WaitFor(kafka);
@@ -72,16 +84,19 @@ var schemaRegistry = builder
 var controlCenter = builder
     .AddContainer("control-center", "docker.io/confluentinc/cp-enterprise-control-center")
     .WithEnvironment("CONTROL_CENTER_BOOTSTRAP_SERVERS", "kafka:29092")
+    .WithEnvironment("CONTROL_CENTER_SCHEMA_REGISTRY_URL", "http://schema-registry:8081")
     .WithEnvironment("CONTROL_CENTER_REPLICATION_FACTOR", "1")
     .WithEnvironment("CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS", "1")
     .WithEnvironment("CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS", "1")
     .WithEnvironment("CONFLUENT_METRICS_TOPIC_REPLICATION", "1")
     .WithEnvironment("CONFLUENT_CONTROLCENTER_INTERNAL_TOPICS_REPLICATION", "1")
     .WithEnvironment("PORT", "9021")
-    .WithEndpoint(9021, 9021, name: "control-center")
+    .WithEndpoint(9021, 9021, name: "control-center", scheme: "http")
     .WithReference(kafka.GetEndpoint("external"))
     .WithReference(kafka.GetEndpoint("broker"))
-    .WaitFor(kafka);
+    .WithReference(schemaRegistry.GetEndpoint("schema-registry"))
+    .WaitFor(kafka)
+    .WaitFor(schemaRegistry);
 ;
 
 // Web API
