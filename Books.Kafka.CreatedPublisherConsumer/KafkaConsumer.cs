@@ -1,5 +1,6 @@
 using Avro.Generic;
 using Confluent.Kafka;
+using Confluent.Kafka.SyncOverAsync;
 using Confluent.SchemaRegistry;
 using Confluent.SchemaRegistry.Serdes;
 using Microsoft.Extensions.Options;
@@ -26,13 +27,11 @@ namespace Books.Kafka.CreatedPublisherConsumer
             };
 
             var schemaRegistry = new CachedSchemaRegistryClient(schemaRegistryConfig);
-
-            IDeserializer<GenericRecord> deserializer =
-                (IDeserializer<GenericRecord>)new AvroDeserializer<GenericRecord>(schemaRegistry);
+            var deserializer = new AvroDeserializer<GenericRecord>(schemaRegistry);
 
             _consumer = new ConsumerBuilder<string, GenericRecord>(consumerConfig)
                 .SetKeyDeserializer(Deserializers.Utf8)
-                .SetValueDeserializer(deserializer)
+                .SetValueDeserializer(deserializer.AsSyncOverAsync())
                 .Build();
 
             _topic = topic.ToString() ?? throw new ArgumentNullException(nameof(topic));
