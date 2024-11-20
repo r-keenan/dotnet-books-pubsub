@@ -494,3 +494,5 @@ Books.RabbitMq.CreatedAuthorConsumer/appsettings.Development.json
 # Todos local file
 ProjectTodos.md
 Books.Kafka.CreatedPublisherConsumer/appsettings.Development.json
+Books.Kafka.CreatedAuthorConsumer/appsettings.Development.json
+Books.Kafka.CreatedBookConsumer/appsettings.Development.json
