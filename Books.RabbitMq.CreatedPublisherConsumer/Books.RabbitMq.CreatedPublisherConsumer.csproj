@@ -10,13 +10,13 @@
     <PackageReference Include="MassTransit" Version="8.3.0" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
     <Using Include="System.Console" Static="true" /> 
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../Books.Shared/Books.Shared.csproj" />
+    <ProjectReference Include="../Books.RabbitMq.Common/Books.RabbitMq.Common.csproj" />
   </ItemGroup>
 
 </Project>
