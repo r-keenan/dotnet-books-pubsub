@@ -1,4 +1,4 @@
-﻿using Books.Kafka.CreatedPublisherConsumer;
+﻿using Books.Kafka.Common;
 using Books.Shared.Constants;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,7 +33,7 @@ await Host.CreateDefaultBuilder(args)
                 KafkaTopics.PublishersTopic
             ));
 
-            services.AddHostedService<KafkaConsumerService>();
+            services.AddHostedService<KafkaConsumerHostedService>();
         }
     )
     .Build()

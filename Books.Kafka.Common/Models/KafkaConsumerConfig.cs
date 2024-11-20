@@ -1,4 +1,4 @@
-namespace Books.Kafka.CreatedPublisherConsumer
+namespace Books.Kafka.Common
 {
     public class KafkaConsumerConfig
     {

@@ -5,7 +5,7 @@ using Confluent.SchemaRegistry;
 using Confluent.SchemaRegistry.Serdes;
 using Microsoft.Extensions.Options;
 
-namespace Books.Kafka.CreatedPublisherConsumer
+namespace Books.Kafka.Common
 {
     public class KafkaConsumer
     {
