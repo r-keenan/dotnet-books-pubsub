@@ -125,17 +125,26 @@ builder
     .WaitFor(rabbitmq);
 
 // Kafka Consumers
-builder
-    .AddProject<Projects.Books_Kafka_CreatedAuthorConsumer>("kafka-created-author-consumer")
-    .WithReference(kafka.GetEndpoint("broker"))
-    .WaitFor(kafka);
-builder
-    .AddProject<Projects.Books_Kafka_CreatedBookConsumer>("kafka-created-book-consumer")
-    .WithReference(kafka.GetEndpoint("broker"))
-    .WaitFor(kafka);
-builder
-    .AddProject<Projects.Books_Kafka_CreatedPublisherConsumer>("kafka-created-publisher-consumer")
-    .WithReference(kafka.GetEndpoint("broker"))
-    .WaitFor(kafka);
+foreach (int instance in Enumerable.Range(1, 3))
+{
+    builder
+        .AddProject<Projects.Books_Kafka_CreatedAuthorConsumer>(
+            $"kafka-created-author-consumer-{instance}"
+        )
+        .WithReference(kafka.GetEndpoint("broker"))
+        .WaitFor(kafka);
+    builder
+        .AddProject<Projects.Books_Kafka_CreatedBookConsumer>(
+            $"kafka-created-book-consumer-{instance}"
+        )
+        .WithReference(kafka.GetEndpoint("broker"))
+        .WaitFor(kafka);
+    builder
+        .AddProject<Projects.Books_Kafka_CreatedPublisherConsumer>(
+            $"kafka-created-publisher-consumer-{instance}"
+        )
+        .WithReference(kafka.GetEndpoint("broker"))
+        .WaitFor(kafka);
+}
 
 builder.Build().Run();
