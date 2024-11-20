@@ -58,7 +58,7 @@ Open the file, copy in the json object below, and update it with your actual con
 }
 ```
 
-You will also have to add an `appsettings.Development.json` file to the root of each RabbitMQ consumer apps as well. The file contents should look like this:
+You will also have to add an `appsettings.Development.json` file to the root of each RabbitMQ consumer app as well. The file contents should look like this:
 
 ```json
 {
@@ -70,6 +70,24 @@ You will also have to add an `appsettings.Development.json` file to the root of 
   },
   "ConnectionStrings": {
     "rabbitmq": "amqp://<user-name>:<password>@localhost:5672"
+  }
+}
+```
+
+You will also have to add an `appsettings.Development.json` file to the root of each Kafka consumer app as well. The file contents should look like this:
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "Kafka": {
+    "BootstrapServers": "localhost:9092",
+    "SchemaRegistryUrl": "http://localhost:8081",
+    "ConsumerGroup": "<resource>-group"
   }
 }
 ```
