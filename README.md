@@ -9,6 +9,7 @@
 - Postgres
 - RabbitMQ
 - Apache Kafka
+- Kafka UI
 - Confluent Cloud Control Center
 
 ## Disclaimer
