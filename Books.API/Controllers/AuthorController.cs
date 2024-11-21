@@ -17,18 +17,21 @@ namespace Books.API.Controllers
         private readonly IPublishEndpoint _publishEndpoint;
         private readonly IKafkaProducerService _kafkaProducer;
         private readonly ApiEndpoints _apiEndpoints;
+        private readonly ILogger<AuthorController> _logger;
 
         public AuthorController(
             IAuthorRepository authorRepository,
             IPublishEndpoint publishEndpoint,
             IKafkaProducerService kafkaProducer,
-            ApiEndpoints apiEndpoints
+            ApiEndpoints apiEndpoints,
+            ILogger<AuthorController> logger
         )
         {
             _authorRepository = authorRepository;
             _publishEndpoint = publishEndpoint;
             _kafkaProducer = kafkaProducer;
             _apiEndpoints = apiEndpoints;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -66,7 +69,7 @@ namespace Books.API.Controllers
                 var author = new Author(dto);
                 await _authorRepository.Update(author);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 if (!await AuthorExistsAsync(id))
                 {
@@ -74,14 +77,23 @@ namespace Books.API.Controllers
                 }
                 else
                 {
-                    // This would get logged in Prod and not a writeline
+                    _logger.LogError(
+                        ex,
+                        "Concurrency conflict occurred while updating author {AuthorId}. Error: {ErrorMessage}",
+                        id,
+                        ex.Message
+                    );
                     throw;
                 }
             }
             catch (Exception ex)
             {
-                // This would get logged in Prod and not a writeline
-                WriteLine(ex);
+                _logger.LogError(
+                    ex,
+                    "Unexpected error occurred while updating author {AuthorId}. Error: {ErrorMessage}",
+                    id,
+                    ex.Message
+                );
                 throw;
             }
 

@@ -19,6 +19,7 @@ namespace Books.API.Controllers
         private readonly IPublishEndpoint _publishEndpoint;
         private readonly IKafkaProducerService _kafkaProducer;
         private readonly ApiEndpoints _apiEndpoints;
+        private readonly ILogger<BookController> _logger;
 
         public BookController(
             IBookRepository bookRepository,
@@ -26,7 +27,8 @@ namespace Books.API.Controllers
             IPublisherRepository publisherRepository,
             IPublishEndpoint publishEndpoint,
             IKafkaProducerService kafkaProducer,
-            ApiEndpoints apiEndpoints
+            ApiEndpoints apiEndpoints,
+            ILogger<BookController> logger
         )
         {
             _bookRepository = bookRepository;
@@ -35,6 +37,7 @@ namespace Books.API.Controllers
             _publishEndpoint = publishEndpoint;
             _kafkaProducer = kafkaProducer;
             _apiEndpoints = apiEndpoints;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -98,7 +101,7 @@ namespace Books.API.Controllers
                 var book = new Book(dto);
                 await _bookRepository.Update(book);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 if (!await BookExistsAsync(id))
                 {
@@ -106,13 +109,23 @@ namespace Books.API.Controllers
                 }
                 else
                 {
+                    _logger.LogError(
+                        ex,
+                        "Concurrency conflict occurred while updating book {BookId}. Error: {ErrorMessage}",
+                        id,
+                        ex.Message
+                    );
                     throw;
                 }
             }
             catch (Exception ex)
             {
-                // I would actually log this in prod and not writeline it
-                WriteLine(ex);
+                _logger.LogError(
+                    ex,
+                    "Unexpected error occurred while updating book {BookId}. Error: {ErrorMessage}",
+                    id,
+                    ex.Message
+                );
                 throw;
             }
 

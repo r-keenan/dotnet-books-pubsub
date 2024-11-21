@@ -17,18 +17,21 @@ namespace MyApp.Namespace
         private readonly IPublishEndpoint _publishEndpoint;
         private readonly IKafkaProducerService _kafkaProducer;
         private readonly ApiEndpoints _apiEndpoints;
+        private readonly ILogger<PublisherController> _logger;
 
         public PublisherController(
             IPublisherRepository publisherRepository,
             IPublishEndpoint publishEndpoint,
             IKafkaProducerService kafkaProducer,
-            ApiEndpoints apiEndpoints
+            ApiEndpoints apiEndpoints,
+            ILogger<PublisherController> logger
         )
         {
             _publisherRepository = publisherRepository;
             _publishEndpoint = publishEndpoint;
             _kafkaProducer = kafkaProducer;
             _apiEndpoints = apiEndpoints;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -66,7 +69,7 @@ namespace MyApp.Namespace
                 var publisher = new Publisher(dto);
                 await _publisherRepository.Update(publisher);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 if (!await PublisherExistsAsync(id))
                 {
@@ -74,13 +77,23 @@ namespace MyApp.Namespace
                 }
                 else
                 {
+                    _logger.LogError(
+                        ex,
+                        "Concurrency conflict occurred while updating publisher {PublisherId}. Error: {ErrorMessage}",
+                        id,
+                        ex.Message
+                    );
                     throw;
                 }
             }
             catch (Exception ex)
             {
-                // I would actually log this in prod and not writeline it
-                WriteLine(ex);
+                _logger.LogError(
+                    ex,
+                    "Unexpected error occurred while updating publisher {PublisherId}. Error: {ErrorMessage}",
+                    id,
+                    ex.Message
+                );
                 throw;
             }
 
@@ -108,8 +121,6 @@ namespace MyApp.Namespace
 
             // Publish to RabbitMQ with MassTransit
             await _publishEndpoint.Publish(publisherMessage);
-
-            //await _kafkaProducer.EnsureTopicExists(KafkaTopics.PublishersTopic);
 
             // Publish to Kafka Topic
             await _kafkaProducer.ProduceAsync(KafkaTopics.PublishersTopic, newPublisher);
