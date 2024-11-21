@@ -109,6 +109,8 @@ namespace MyApp.Namespace
             // Publish to RabbitMQ with MassTransit
             await _publishEndpoint.Publish(publisherMessage);
 
+            //await _kafkaProducer.EnsureTopicExists(KafkaTopics.PublishersTopic);
+
             // Publish to Kafka Topic
             await _kafkaProducer.ProduceAsync(KafkaTopics.PublishersTopic, newPublisher);
 

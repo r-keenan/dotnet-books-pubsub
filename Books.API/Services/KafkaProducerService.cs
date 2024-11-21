@@ -4,6 +4,7 @@ using Avro.Generic;
 using Books.API.Services;
 using Books.Shared;
 using Confluent.Kafka;
+using Confluent.Kafka.Admin;
 using Confluent.SchemaRegistry;
 using Confluent.SchemaRegistry.Serdes;
 using Microsoft.Extensions.Options;
@@ -48,6 +49,37 @@ public class KafkaProducerService : IKafkaProducerService, IDisposable
             .SetValueSerializer(new AvroSerializer<GenericRecord>(_schemaRegistry))
             .Build();
         _logger = logger;
+    }
+
+    public async Task EnsureTopicExists(string topicName)
+    {
+        using var adminClient = new AdminClientBuilder(
+            new AdminClientConfig { BootstrapServers = "localhost:29092" }
+        ).Build();
+
+        try
+        {
+            await adminClient.CreateTopicsAsync(
+                new TopicSpecification[]
+                {
+                    new TopicSpecification
+                    {
+                        Name = topicName,
+                        NumPartitions = 3,
+                        ReplicationFactor = 1,
+                        Configs = new Dictionary<string, string> { { "retention.ms", "86400000" } },
+                    },
+                }
+            );
+        }
+        catch (CreateTopicsException e)
+            when (e
+                    .Results.Select(r => r.Error.Code)
+                    .All(code => code == ErrorCode.TopicAlreadyExists)
+            )
+        {
+            // Topic already exists, ignore
+        }
     }
 
     public async Task ProduceAsync<T>(string topic, T message)

@@ -496,3 +496,4 @@ ProjectTodos.md
 Books.Kafka.CreatedPublisherConsumer/appsettings.Development.json
 Books.Kafka.CreatedAuthorConsumer/appsettings.Development.json
 Books.Kafka.CreatedBookConsumer/appsettings.Development.json
+Books.Kafka.Common/appsettings.Development.json

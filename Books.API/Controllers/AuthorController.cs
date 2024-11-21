@@ -108,6 +108,8 @@ namespace Books.API.Controllers
             // Publish to RabbitMQ with MassTransit
             await _publishEndpoint.Publish(authorMessage);
 
+            await _kafkaProducer.EnsureTopicExists(KafkaTopics.AuthorsTopic);
+
             // Publish to Kafka Topic
             await _kafkaProducer.ProduceAsync(KafkaTopics.AuthorsTopic, newAuthor);
 
