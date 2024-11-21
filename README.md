@@ -3,12 +3,14 @@
 ## Technologies used
 
 - .Net 8 WebApi
-- .Net 8 Console Apps - RabbitMQ consumers
-- .Net Aspire
+- .Net 8 Console Apps - RabbitMQ consumers & Kafka Consumers
+- .Net Aspire 9
 - Entity Framework Core
 - Postgres
 - RabbitMQ
+- Rabbit MQ UI
 - Apache Kafka
+- Kafka Schema Registry
 - Kafka UI
 - Confluent Cloud Control Center
 
