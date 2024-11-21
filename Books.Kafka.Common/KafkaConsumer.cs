@@ -127,12 +127,11 @@ namespace Books.Kafka.Common
             try
             {
                 _logger.LogInformation($"Processing message: {result.Message.Value}");
-                // Add your message processing logic here
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Error processing message: {ex.Message}");
-                throw; // Rethrow to trigger retry
+                throw;
             }
         }
     }

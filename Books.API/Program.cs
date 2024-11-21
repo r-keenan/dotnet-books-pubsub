@@ -4,6 +4,8 @@ using Books.API.Models;
 using Books.API.Models.Validators;
 using Books.API.Repositories;
 using Books.API.Services;
+using Books.Kafka.Common;
+using Confluent.Kafka;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MassTransit;
@@ -66,6 +68,24 @@ builder
     .AddValidatorsFromAssemblyContaining<BookValidator>();
 
 builder.Services.AddHttpClient();
+builder.Services.AddSingleton<IAdminClient>(sp =>
+{
+    var bootstrapServers = builder.Configuration.GetValue<string>("Kafka:BootstrapServers");
+    var adminConfig = new AdminClientConfig
+    {
+        BootstrapServers = bootstrapServers,
+        SecurityProtocol = SecurityProtocol.Plaintext,
+        ApiVersionRequest = true,
+        SocketTimeoutMs = 10000,
+        ConnectionsMaxIdleMs = 180000,
+    };
+    var logger = sp.GetRequiredService<ILogger<Program>>();
+    logger.LogInformation($"Configuring Kafka with bootstrap servers: {bootstrapServers}");
+
+    return new AdminClientBuilder(adminConfig).Build();
+});
+
+builder.Services.AddSingleton<IKafkaTopicManager, KafkaTopicManager>();
 builder.Services.Configure<KafkaProducerConfig>(builder.Configuration.GetSection("Kafka"));
 builder.Services.AddSingleton<IKafkaProducerService, KafkaProducerService>();
 builder.Services.AddSingleton<ApiEndpoints>();
@@ -76,6 +96,13 @@ builder.Services.AddTransient<IPublisherRepository, PublisherRepository>();
 builder.Services.AddTransient(typeof(IHttpApiRepository<>), typeof(HttpApiRepository<>));
 
 var app = builder.Build();
+
+// Initialize Kafka topics
+using (var scope = app.Services.CreateScope())
+{
+    var kafkaProducer = scope.ServiceProvider.GetRequiredService<IKafkaProducerService>();
+    await ((KafkaProducerService)kafkaProducer).InitializeAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

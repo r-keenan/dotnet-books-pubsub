@@ -1,11 +1,12 @@
-﻿using System.Text.Json;
+﻿using System.Runtime.CompilerServices;
+using System.Text.Json;
 using Avro;
 using Avro.Generic;
 using Books.API.Services;
 using Books.Common;
+using Books.Common.Constants;
 using Books.Kafka.Common;
 using Confluent.Kafka;
-using Confluent.Kafka.Admin;
 using Confluent.SchemaRegistry;
 using Confluent.SchemaRegistry.Serdes;
 using Microsoft.Extensions.Options;
@@ -17,10 +18,19 @@ public class KafkaProducerService : IKafkaProducerService, IDisposable
     private readonly IProducer<string, GenericRecord> _producer;
     private readonly ISchemaRegistryClient _schemaRegistry;
     private readonly ILogger<KafkaProducerService> _logger;
+    private readonly IKafkaTopicManager _topicManager;
+
+    public async Task InitializeAsync()
+    {
+        var topics = KafkaTopics.GetAllTopics().ToList();
+        _logger.LogInformation($"Initializing topics: {string.Join(", ", topics)}");
+        await _topicManager.CreateTopicIfNotExists(topics, 3, 1);
+    }
 
     public KafkaProducerService(
         IOptions<KafkaProducerConfig> config,
-        ILogger<KafkaProducerService> logger
+        ILogger<KafkaProducerService> logger,
+        IKafkaTopicManager topicManager
     )
     {
         if (config == null)
@@ -50,37 +60,8 @@ public class KafkaProducerService : IKafkaProducerService, IDisposable
             .SetValueSerializer(new AvroSerializer<GenericRecord>(_schemaRegistry))
             .Build();
         _logger = logger;
-    }
 
-    public async Task EnsureTopicExists(string topicName)
-    {
-        using var adminClient = new AdminClientBuilder(
-            new AdminClientConfig { BootstrapServers = "localhost:29092" }
-        ).Build();
-
-        try
-        {
-            await adminClient.CreateTopicsAsync(
-                new TopicSpecification[]
-                {
-                    new TopicSpecification
-                    {
-                        Name = topicName,
-                        NumPartitions = 3,
-                        ReplicationFactor = 1,
-                        Configs = new Dictionary<string, string> { { "retention.ms", "86400000" } },
-                    },
-                }
-            );
-        }
-        catch (CreateTopicsException e)
-            when (e
-                    .Results.Select(r => r.Error.Code)
-                    .All(code => code == ErrorCode.TopicAlreadyExists)
-            )
-        {
-            // Topic already exists, ignore
-        }
+        _topicManager = topicManager;
     }
 
     public async Task ProduceAsync<T>(string topic, T message)

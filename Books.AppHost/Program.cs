@@ -106,7 +106,8 @@ builder
     .WithReference(postgres)
     .WaitFor(postgres)
     .WithReference(rabbitmq)
-    .WaitFor(rabbitmq);
+    .WaitFor(rabbitmq)
+    .WaitFor(kafka);
 
 // RabbitMQ Consumers
 builder
