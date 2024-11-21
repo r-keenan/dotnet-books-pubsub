@@ -60,7 +60,8 @@ var kafkaUi = builder
     .WithEnvironment("KAFKA_CLUSTERS_0_NAME", "local")
     .WithEnvironment("KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS", "kafka:29092")
     .WithEndpoint(8080, 8080, name: "kafka-ui", scheme: "http")
-    .WithReference(kafka.GetEndpoint("broker"));
+    .WithReference(kafka.GetEndpoint("broker"))
+    .WaitFor(kafka);
 
 var schemaRegistry = builder
     .AddContainer("schema-registry", "confluentinc/cp-schema-registry")
