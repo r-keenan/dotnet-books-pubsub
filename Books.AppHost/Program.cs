@@ -1,6 +1,6 @@
 using Books.AppHost;
 using Books.AppHost.Extensions;
-using Books.Shared.Constants;
+using Books.Common.Constants;
 
 var builder = DistributedApplication.CreateBuilder(args);
 

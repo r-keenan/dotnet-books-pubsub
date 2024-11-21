@@ -1,8 +1,8 @@
 using Books.API;
 using Books.API.Constants;
 using Books.API.Repositories;
-using Books.Shared.Constants;
-using Books.Shared.Messages;
+using Books.Common.Constants;
+using Books.Common.Messages;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

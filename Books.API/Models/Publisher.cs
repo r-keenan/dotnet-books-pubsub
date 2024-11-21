@@ -1,4 +1,4 @@
-﻿using Books.Shared.Enums;
+﻿using Books.Common.Enums;
 
 namespace Books.API;
 

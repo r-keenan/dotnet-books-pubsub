@@ -2,7 +2,8 @@
 using Avro;
 using Avro.Generic;
 using Books.API.Services;
-using Books.Shared;
+using Books.Common;
+using Books.Kafka.Common;
 using Confluent.Kafka;
 using Confluent.Kafka.Admin;
 using Confluent.SchemaRegistry;

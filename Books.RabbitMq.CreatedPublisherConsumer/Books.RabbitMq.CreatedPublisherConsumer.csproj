@@ -15,7 +15,7 @@
     <Using Include="System.Console" Static="true" /> 
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="../Books.Shared/Books.Shared.csproj" />
+    <ProjectReference Include="../Books.Common/Books.Common.csproj" />
     <ProjectReference Include="../Books.RabbitMq.Common/Books.RabbitMq.Common.csproj" />
   </ItemGroup>
 

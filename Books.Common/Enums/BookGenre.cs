@@ -1,4 +1,4 @@
-﻿namespace Books.Shared.Enums;
+﻿namespace Books.Common.Enums;
 
 public enum BookGenre
 {
@@ -9,5 +9,5 @@ public enum BookGenre
     NONFICTION,
     SCIENCE_FICTION,
     THRILLER,
-    UNKNOWN
+    UNKNOWN,
 }

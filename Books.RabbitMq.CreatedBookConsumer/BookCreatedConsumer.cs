@@ -1,5 +1,5 @@
+using Books.Common.Messages;
 using Books.RabbitMq.Common;
-using Books.Shared.Messages;
 using MassTransit;
 
 namespace Books.RabbitMq.CreatedBookConsumer

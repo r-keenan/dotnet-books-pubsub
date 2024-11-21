@@ -1,4 +1,4 @@
-namespace Books.Shared.Constants;
+namespace Books.Common.Constants;
 
 public class KafkaTopics
 {
@@ -6,10 +6,6 @@ public class KafkaTopics
     public const string AuthorsTopic = "authors";
     public const string PublishersTopic = "publishers";
 
-    public static IEnumerable<string> GetAllTopics() => new[]
-    {
-        BooksTopic,
-        AuthorsTopic,
-        PublishersTopic
-    };
+    public static IEnumerable<string> GetAllTopics() =>
+        new[] { BooksTopic, AuthorsTopic, PublishersTopic };
 }

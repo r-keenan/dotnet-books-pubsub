@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.API", "Books.API\Books.API.csproj", "{16A7033E-F8BE-4DB1-AFB1-2152A5888C46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Shared", "Books.Shared\Books.Shared.csproj", "{00D65E89-0718-4605-8293-D0EFB63CF537}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.AppHost", "Books.AppHost\Books.AppHost.csproj", "{703585AC-8A0C-46CA-9DC0-B26C32223FFF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.RabbitMq.CreatedPublisherConsumer", "Books.RabbitMq.CreatedPublisherConsumer\Books.RabbitMq.CreatedPublisherConsumer.csproj", "{C6988F48-79EE-4F9B-8E79-34938C251F8B}"
@@ -24,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Kafka.Common", "Books.Kafka.Common\Books.Kafka.Common.csproj", "{040960C7-5FBF-4361-83D4-D417F5B13764}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.RabbitMq.Common", "Books.RabbitMq.Common\Books.RabbitMq.Common.csproj", "{D7EF8D76-FCBC-453C-B570-570E626CA81F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Common", "Books.Common\Books.Common.csproj", "{B8BC3967-D14D-4905-97F7-981EB12ADDD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,5 +78,9 @@ Global
 		{D7EF8D76-FCBC-453C-B570-570E626CA81F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7EF8D76-FCBC-453C-B570-570E626CA81F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7EF8D76-FCBC-453C-B570-570E626CA81F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8BC3967-D14D-4905-97F7-981EB12ADDD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8BC3967-D14D-4905-97F7-981EB12ADDD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8BC3967-D14D-4905-97F7-981EB12ADDD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8BC3967-D14D-4905-97F7-981EB12ADDD9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,4 @@
-namespace Books.Shared.Messages;
+namespace Books.Common.Messages;
 
 public class AuthorMessage
 {

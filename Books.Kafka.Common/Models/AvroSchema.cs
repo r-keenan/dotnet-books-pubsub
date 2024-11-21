@@ -1,4 +1,4 @@
-namespace Books.Shared
+namespace Books.Common
 {
     public class AvroSchema<T>
     {

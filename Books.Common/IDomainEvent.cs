@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
-namespace Books.Shared;
+namespace Books.Common;
 
 public interface IDomainEvent : INotification
 {
-	DateTime ActionDate { get; }
+    DateTime ActionDate { get; }
 }

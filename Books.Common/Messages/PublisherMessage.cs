@@ -1,6 +1,6 @@
-using Books.Shared.Enums;
+using Books.Common.Enums;
 
-namespace Books.Shared.Messages;
+namespace Books.Common.Messages;
 
 public class PublisherMessage
 {
