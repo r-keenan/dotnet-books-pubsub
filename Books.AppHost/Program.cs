@@ -1,5 +1,3 @@
-using Books.AppHost;
-using Books.AppHost.Extensions;
 using Books.Common.Constants;
 
 var builder = DistributedApplication.CreateBuilder(args);
@@ -24,7 +22,6 @@ var kafka = builder
     .WithEnvironment("KAFKA_NODE_ID", "1")
     .WithEnvironment("KAFKA_HEAP_OPTS", "-Xmx512M -Xms512M")
     .WithEnvironment("KAFKA_MIN_INSYNC_REPLICAS", "1")
-    //.WithEnvironment("KAFKA_AUTO_CREATE_TOPICS_ENABLE", "true")
     .WithEnvironment("KAFKA_NUM_PARTITIONS", "1")
     .WithEnvironment("KAFKA_DEFAULT_REPLICATION_FACTOR", "1")
     .WithEnvironment("KAFKA_PROCESS_ROLES", "controller,broker")
@@ -55,7 +52,6 @@ var kafka = builder
     .WithEndpoint(9092, 9092, name: "external")
     .WithEndpoint(9093, 9093, name: "controller")
     .WithEndpoint(29092, 29092, name: "broker")
-    .WithTopics(KafkaTopics.GetAllTopics(), numPartitions: 3, replicationFactor: 1)
     .WithVolume("kafka_data", "/var/lib/kafka/data")
     .WithVolume("kafka_metadata", "/var/lib/kafka/metadata");
 
