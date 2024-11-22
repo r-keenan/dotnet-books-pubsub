@@ -30,10 +30,7 @@ var kafka = builder
         "KAFKA_LISTENERS",
         "BROKER://0.0.0.0:29092,CONTROLLER://0.0.0.0:9093,EXTERNAL://0.0.0.0:9092"
     )
-    .WithEnvironment(
-        "KAFKA_ADVERTISED_LISTENERS",
-        "BROKER://kafka:29092,EXTERNAL://localhost:9092"
-    )
+    .WithEnvironment("KAFKA_ADVERTISED_LISTENERS", "BROKER://kafka:29092,EXTERNAL://localhost:9092")
     .WithEnvironment(
         "KAFKA_LISTENER_SECURITY_PROTOCOL_MAP",
         "BROKER:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT"

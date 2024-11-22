@@ -124,9 +124,9 @@ You will also have to add an `appsettings.Development.json` file to the root of 
 
 Once you have your Postgres connection string set, restart the .Net Aspire project, and then the project will work.
 
-### Seed Data
+### Migrations & Seed Data
 
-If you wish to run the migrations, `cd` into the Books.API directory and run the following command while Books.AppHost is running
+If you wish to run the migrations, `cd` into the Books.API directory and run the following command while Books.AppHost is running.
 
 ```bash
 dotnet ef database update
