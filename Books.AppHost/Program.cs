@@ -28,18 +28,18 @@ var kafka = builder
     .WithEnvironment("KAFKA_CONTROLLER_QUORUM_VOTERS", "1@0.0.0.0:9093")
     .WithEnvironment(
         "KAFKA_LISTENERS",
-        "PLAINTEXT://0.0.0.0:29092,CONTROLLER://0.0.0.0:9093,EXTERNAL://0.0.0.0:9092"
+        "BROKER://0.0.0.0:29092,CONTROLLER://0.0.0.0:9093,EXTERNAL://0.0.0.0:9092"
     )
     .WithEnvironment(
         "KAFKA_ADVERTISED_LISTENERS",
-        "PLAINTEXT://kafka:29092,EXTERNAL://localhost:9092"
+        "BROKER://kafka:29092,EXTERNAL://localhost:9092"
     )
     .WithEnvironment(
         "KAFKA_LISTENER_SECURITY_PROTOCOL_MAP",
-        "PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT"
+        "BROKER:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT"
     )
     .WithEnvironment("KAFKA_CONTROLLER_LISTENER_NAMES", "CONTROLLER")
-    .WithEnvironment("KAFKA_INTER_BROKER_LISTENER_NAME", "PLAINTEXT")
+    .WithEnvironment("KAFKA_INTER_BROKER_LISTENER_NAME", "BROKER")
     .WithEnvironment("KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR", "1")
     .WithEnvironment("KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS", "0")
     .WithEnvironment("KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR", "1")
@@ -67,7 +67,7 @@ var schemaRegistry = builder
     .AddContainer("schema-registry", "confluentinc/cp-schema-registry")
     .WithEnvironment("SCHEMA_REGISTRY_HOST_NAME", "schema-registry")
     .WithEnvironment("SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL", "PLAINTEXT")
-    .WithEnvironment("SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS", "PLAINTEXT://kafka:29092")
+    .WithEnvironment("SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS", "kafka:29092")
     .WithEnvironment("SCHEMA_REGISTRY_RETRY_ON_START", "true")
     .WithEnvironment("SCHEMA_REGISTRY_LISTENERS", "http://0.0.0.0:8081")
     .WithEnvironment("SCHEMA_REGISTRY_KAFKASTORE_TOPIC", "_schemas")
