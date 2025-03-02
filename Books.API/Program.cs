@@ -5,6 +5,7 @@ using Books.API.Models.Validators;
 using Books.API.Repositories;
 using Books.API.Services;
 using Books.Kafka.Common;
+using Books.ServiceDefaults.Hosting;
 using Confluent.Kafka;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -15,6 +16,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
 
 // This is referencing the books container of Postgres in .Net Aspire
 var connectionString = builder.Configuration.GetConnectionString("postgres-books");

@@ -36,6 +36,7 @@
   <ItemGroup>
     <ProjectReference Include="../Books.Common/Books.Common.csproj" />
     <ProjectReference Include="../Books.Kafka.Common/Books.Kafka.Common.csproj" />
+    <ProjectReference Include="../Books.ServiceDefaults/Books.ServiceDefaults.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Using Include="System.Console" Static="true" />
