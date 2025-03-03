@@ -100,6 +100,7 @@ builder.Services.AddTransient(typeof(IHttpApiRepository<>), typeof(HttpApiReposi
 
 var app = builder.Build();
 
+app.MapDefaultEndpoints();
 // Initialize Kafka topics
 using (var scope = app.Services.CreateScope())
 {
