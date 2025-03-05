@@ -19,6 +19,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
+builder.Services.AddProblemDetails();
+
 // This is referencing the books container of Postgres in .Net Aspire
 var connectionString = builder.Configuration.GetConnectionString("postgres-books");
 builder.Services.AddDbContext<BooksDbContext>(opt =>
@@ -99,6 +101,8 @@ builder.Services.AddTransient<IPublisherRepository, PublisherRepository>();
 builder.Services.AddTransient(typeof(IHttpApiRepository<>), typeof(HttpApiRepository<>));
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 app.MapDefaultEndpoints();
 // Initialize Kafka topics
