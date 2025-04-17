@@ -1,6 +1,7 @@
 using Books.API;
 using Books.API.Constants;
 using Books.API.Models;
+using Books.API.Models.Mappers;
 using Books.API.Models.Validators;
 using Books.API.Repositories;
 using Books.API.Services;
@@ -96,6 +97,7 @@ builder.Services.Configure<KafkaProducerConfig>(builder.Configuration.GetSection
 builder.Services.AddSingleton<IKafkaProducerService, KafkaProducerService>();
 builder.Services.AddSingleton<ApiEndpoints>();
 
+builder.Services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 builder.Services.AddTransient<IBookRepository, BookRepository>();
 builder.Services.AddTransient<IAuthorRepository, AuthorRepository>();
 builder.Services.AddTransient<IPublisherRepository, PublisherRepository>();
