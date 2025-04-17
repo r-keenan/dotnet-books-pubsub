@@ -1,7 +1,6 @@
 using Books.API.Constants;
 using Books.API.Models.Mappers.Interfaces;
 using Books.API.Repositories;
-using Books.API.Services;
 using Books.Common.Constants;
 using Books.Common.Messages;
 using MassTransit;
@@ -12,7 +11,7 @@ namespace Books.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BookController : ControllerBase
+    public class BookController : BaseController<Book>
     {
         private readonly IBookRepository _bookRepository;
         private readonly IAuthorRepository _authorRepository;
@@ -32,7 +31,7 @@ namespace Books.API.Controllers
             ApiEndpoints apiEndpoints,
             ILogger<BookController> logger,
             IBookMapper mapper
-        )
+        ) : base(bookRepository)
         {
             _bookRepository = bookRepository;
             _authorRepository = authorRepository;
@@ -42,13 +41,6 @@ namespace Books.API.Controllers
             _apiEndpoints = apiEndpoints;
             _logger = logger;
             _mapper = mapper;
-        }
-
-        [HttpGet]
-        // TODO: Add Pagination to endpoint
-        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
-        {
-            return await _bookRepository.GetAll();
         }
 
         [HttpGet("/details")]

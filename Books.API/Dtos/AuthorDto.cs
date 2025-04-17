@@ -1,8 +1,9 @@
-﻿namespace Books.API;
+﻿using Books.API.Dtos;
 
-public class AuthorDto
+namespace Books.API;
+
+public class AuthorDto : BaseDto
 {
-    public int Id { get; set; }
     public string FirstName { get; set; } = "";
     public string MiddleName { get; set; } = "";
     public string LastName { get; set; } = "";

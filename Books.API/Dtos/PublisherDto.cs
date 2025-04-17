@@ -1,10 +1,10 @@
-﻿using Books.Common.Enums;
+﻿using Books.API.Dtos;
+using Books.Common.Enums;
 
 namespace Books.API;
 
-public class PublisherDto
+public class PublisherDto : BaseDto
 {
-    public int Id { get; set; }
     public string Name { get; set; } = "";
     public string Address1 { get; set; } = "";
     public string Address2 { get; set; } = "";
