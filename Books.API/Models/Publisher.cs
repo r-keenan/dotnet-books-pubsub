@@ -1,4 +1,5 @@
 ﻿using Books.Common.Enums;
+using Riok.Mapperly.Abstractions;
 
 namespace Books.API;
 
@@ -15,28 +16,25 @@ public class Publisher : BaseModel
     // Need for Entity Framework Core migrations
     public Publisher() { }
 
-    public Publisher(PublisherDto dto)
-    {
-        Id = dto.Id;
-        Name = dto.Name;
-        Address1 = dto.Address1;
-        Address2 = dto.Address2;
-        City = dto.City;
-        State = dto.State;
-        ZipCode = dto.ZipCode;
-        DateFounded = dto.DateFounded;
-    }
+}
+public interface IPublisherMapper
+{
+    Publisher ToEntity(PublisherDto dto);
+    PublisherDto ToDto(Publisher entity);
+}
 
-    public PublisherDto ToDto() =>
-        new()
-        {
-            Id = Id,
-            Name = Name,
-            Address1 = Address1,
-            Address2 = Address2,
-            City = City,
-            State = State,
-            ZipCode = ZipCode,
-            DateFounded = DateFounded,
-        };
+[Mapper]
+public partial class PublisherMapper : IPublisherMapper
+{
+    public partial Publisher ToEntity(PublisherDto dto);
+    public partial PublisherDto ToDto(Publisher entity);
+}
+
+public static class MapperServiceExtensions
+{
+    public static IServiceCollection AddMappers(this IServiceCollection services)
+    {
+        services.AddSingleton<IPublisherMapper, PublisherMapper>();
+        return services;
+    }
 }

@@ -20,6 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
 builder.Services.AddProblemDetails();
+builder.Services.AddMappers();
 
 // This is referencing the books container of Postgres in .Net Aspire
 var connectionString = builder.Configuration.GetConnectionString("postgres-books");

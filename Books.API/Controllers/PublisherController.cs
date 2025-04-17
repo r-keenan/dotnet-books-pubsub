@@ -18,13 +18,15 @@ namespace MyApp.Namespace
         private readonly IKafkaProducerService _kafkaProducer;
         private readonly ApiEndpoints _apiEndpoints;
         private readonly ILogger<PublisherController> _logger;
+        private readonly IPublisherMapper _mapper;
 
         public PublisherController(
             IPublisherRepository publisherRepository,
             IPublishEndpoint publishEndpoint,
             IKafkaProducerService kafkaProducer,
             ApiEndpoints apiEndpoints,
-            ILogger<PublisherController> logger
+            ILogger<PublisherController> logger,
+            IPublisherMapper mapper
         )
         {
             _publisherRepository = publisherRepository;
@@ -32,6 +34,7 @@ namespace MyApp.Namespace
             _kafkaProducer = kafkaProducer;
             _apiEndpoints = apiEndpoints;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -51,7 +54,7 @@ namespace MyApp.Namespace
                 return NotFound();
             }
 
-            var publisherDto = publisher.ToDto();
+            var publisherDto = _mapper.ToDto(publisher);
 
             return publisherDto;
         }
@@ -66,7 +69,7 @@ namespace MyApp.Namespace
 
             try
             {
-                var publisher = new Publisher(dto);
+                var publisher = _mapper.ToEntity(dto);
                 await _publisherRepository.Update(publisher);
             }
             catch (DbUpdateConcurrencyException ex)
@@ -103,7 +106,7 @@ namespace MyApp.Namespace
         [HttpPost]
         public async Task<IActionResult> CreatePublisher(PublisherDto publisherDto)
         {
-            var publisher = new Publisher(publisherDto);
+            var publisher = _mapper.ToEntity(publisherDto);
 
             var newPublisher = await _publisherRepository.Add(publisher);
 
