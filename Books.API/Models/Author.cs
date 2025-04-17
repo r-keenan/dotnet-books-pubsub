@@ -10,25 +10,4 @@ public class Author : BaseModel
 
     // Need for Entity Framework Core migrations
     public Author() { }
-
-    public Author(AuthorDto dto)
-    {
-        Id = dto.Id;
-        FirstName = dto.FirstName;
-        MiddleName = dto.MiddleName;
-        LastName = dto.LastName;
-        DateOfBirth = dto.DateOfBirth;
-        WritingAwards = dto.WritingAwards;
-    }
-
-    public AuthorDto ToDto() =>
-        new()
-        {
-            Id = Id,
-            FirstName = FirstName,
-            MiddleName = MiddleName,
-            LastName = LastName,
-            DateOfBirth = DateOfBirth,
-            WritingAwards = WritingAwards,
-        };
 }

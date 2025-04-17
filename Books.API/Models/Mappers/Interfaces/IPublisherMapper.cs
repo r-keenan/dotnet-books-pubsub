@@ -1,4 +1,4 @@
-using Books.API;
+namespace Books.API.Models.Mappers.Interfaces;
 
 public interface IPublisherMapper
 {

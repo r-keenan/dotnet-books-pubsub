@@ -1,4 +1,5 @@
 using Books.API.Constants;
+using Books.API.Models.Mappers.Interfaces;
 using Books.API.Repositories;
 using Books.API.Services;
 using Books.Common.Constants;
@@ -20,6 +21,7 @@ namespace Books.API.Controllers
         private readonly IKafkaProducerService _kafkaProducer;
         private readonly ApiEndpoints _apiEndpoints;
         private readonly ILogger<BookController> _logger;
+        private readonly IBookMapper _mapper;
 
         public BookController(
             IBookRepository bookRepository,
@@ -28,7 +30,8 @@ namespace Books.API.Controllers
             IPublishEndpoint publishEndpoint,
             IKafkaProducerService kafkaProducer,
             ApiEndpoints apiEndpoints,
-            ILogger<BookController> logger
+            ILogger<BookController> logger,
+            IBookMapper mapper
         )
         {
             _bookRepository = bookRepository;
@@ -38,6 +41,7 @@ namespace Books.API.Controllers
             _kafkaProducer = kafkaProducer;
             _apiEndpoints = apiEndpoints;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -68,7 +72,7 @@ namespace Books.API.Controllers
                 return NotFound();
             }
 
-            var bookDto = book.ToDto();
+            var bookDto = _mapper.ToDto(book);
 
             return bookDto;
         }
@@ -98,7 +102,7 @@ namespace Books.API.Controllers
 
             try
             {
-                var book = new Book(dto);
+                var book = _mapper.ToEntity(dto);
                 await _bookRepository.Update(book);
             }
             catch (DbUpdateConcurrencyException ex)
@@ -135,7 +139,7 @@ namespace Books.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateBook(BookDto bookDto)
         {
-            var book = new Book(bookDto);
+            var book = _mapper.ToEntity(bookDto);
 
             var newBook = await _bookRepository.Add(book);
 

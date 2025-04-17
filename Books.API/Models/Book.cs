@@ -16,29 +16,6 @@ public class Book : BaseModel
     // Need for Entity Framework Core migrations
     public Book() { }
 
-    public Book(BookDto dto)
-    {
-        Id = dto.Id;
-        Title = dto.Title;
-        Genre = dto.Genre;
-        PageLength = dto.PageLength;
-        DatePublished = dto.DatePublished;
-        AuthorId = dto.AuthorId;
-        PublisherId = dto.PublisherId;
-    }
-
-    public BookDto ToDto() =>
-        new()
-        {
-            Id = Id,
-            Title = Title,
-            Genre = Genre,
-            PageLength = PageLength,
-            DatePublished = DatePublished,
-            AuthorId = AuthorId,
-            PublisherId = PublisherId,
-        };
-
     public BookDetailsDto ToDetailsDto() =>
         new()
         {
