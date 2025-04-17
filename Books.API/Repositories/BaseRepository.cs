@@ -11,20 +11,20 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseModel
         _context = context;
     }
 
-    public async Task<T> Add(T entity)
+    public virtual async Task<T> Add(T entity)
     {
         var result = await _context.AddAsync(entity);
         await _context.SaveChangesAsync();
         return result.Entity;
     }
 
-    public void AddBatch(IEnumerable<T> entities)
+    public virtual void AddBatch(IEnumerable<T> entities)
     {
         _context.Set<T>().AddRange(entities);
         _context.SaveChanges();
     }
 
-    public async Task<bool> Delete(int id)
+    public virtual async Task<bool> Delete(int id)
     {
         var entity = await Get(id);
         _context.Set<T>().Remove(entity);
@@ -32,12 +32,12 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseModel
         return result > 0;
     }
 
-    public async Task<bool> Exists(int id)
+    public virtual async Task<bool> Exists(int id)
     {
         return await _context.Set<T>().AnyAsync(e => e.Id == id);
     }
 
-    public async Task<T> Get(int id)
+    public virtual async Task<T> Get(int id)
     {
         var entity = await _context.Set<T>().FindAsync(id);
 
@@ -49,12 +49,12 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseModel
         return entity;
     }
 
-    public async Task<List<T>> GetAll()
+    public virtual async Task<List<T>> GetAll()
     {
         return await _context.Set<T>().ToListAsync();
     }
 
-    public async Task<T> Update(T entity)
+    public virtual async Task<T> Update(T entity)
     {
 
         _context.Set<T>().Update(entity);
