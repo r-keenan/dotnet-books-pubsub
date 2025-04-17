@@ -1,11 +1,5 @@
 ﻿namespace Books.API.Repositories;
 
-public interface IAuthorRepository
+public interface IAuthorRepository : IBaseRepository<Author>
 {
-    Task<Author> Get(int id);
-    Task<List<Author>> GetAll();
-    Task<Author> Add(Author author);
-    Task<bool> Delete(int id);
-    Task<Author> Update(Author author);
-    Task<bool> Exists(int id);
 }

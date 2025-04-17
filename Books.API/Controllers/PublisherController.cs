@@ -1,5 +1,6 @@
 using Books.API;
 using Books.API.Constants;
+using Books.API.Models.Mappers.Interfaces;
 using Books.API.Repositories;
 using Books.Common.Constants;
 using Books.Common.Messages;
