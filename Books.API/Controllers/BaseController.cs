@@ -1,7 +1,6 @@
 using Books.API.Dtos;
 using Books.API.Models.Mappers.Interfaces;
 using Books.API.Repositories;
-using Books.Common.Constants;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +9,7 @@ namespace Books.API.Controllers;
 
 public class BaseController<TEntity, TDto, TMapper> : ControllerBase where TEntity : BaseModel
 where TDto : BaseDto
-where TMapper : IBaseMapper<TEntity, TDto>
+where TMapper : IBaseMapper<TEntity, TDto, TMessage>
 
 {
     private readonly IBaseRepository<TEntity> _baseRepository;
@@ -74,7 +73,7 @@ where TMapper : IBaseMapper<TEntity, TDto>
             {
                 _logger.LogError(
                     ex,
-                    $"Concurrency conflict occurred while updating {typeof(TEntity)} {entity.Id}. Error: {ex}",
+                    $"Concurrency conflict occurred while updating {typeof(TEntity).Name} {entity.Id}. Error: {ex.Message}",
                     id,
                     ex.Message
                 );
@@ -85,7 +84,7 @@ where TMapper : IBaseMapper<TEntity, TDto>
         {
             _logger.LogError(
                 ex,
-                "Unexpected error occurred while updating publisher {PublisherId}. Error: {ErrorMessage}",
+                $"Unexpected error occurred while updating {typeof(TEntity).Name} {entity.Id}. Error: {ex.Message}",
                 id,
                 ex.Message
             );
@@ -96,37 +95,33 @@ where TMapper : IBaseMapper<TEntity, TDto>
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreatePublisher(TDto dto)
+    public async Task<IActionResult> CreateEntity(TDto dto)
     {
         var entity = _mapper.ToEntity(dto);
 
         var newEntity = await _baseRepository.Add(entity);
 
-        var rabbitMqMessage = new PublisherMessage()
-        {
-            Id = newPublisher.Id,
-            Name = newPublisher.Name,
-            Address1 = newPublisher.Address1,
-            Address2 = newPublisher.Address2,
-            City = newPublisher.City,
-            State = newPublisher.State,
-            ZipCode = newPublisher.ZipCode,
-            DateFounded = newPublisher.DateFounded,
-        };
+        // Get type of DTO
+        string entityTypeName = typeof(TEntity).Name;
+
+        // Map a DTO to a message
+        var entityMessage = _mapper.ToMessage(dto);
 
         // Publish to RabbitMQ with MassTransit
-        await _publishEndpoint.Publish(rabbitMqMessage);
+        await _publishEndpoint.Publish(entityMessage);
 
+        string topicName = GetKafkaTopicForEntityType(entityTypeName);
         // Publish to Kafka Topic
-        await _kafkaProducer.ProduceAsync(KafkaTopics.PublishersTopic, newEntity);
+        await _kafkaProducer.ProduceAsync(topicName, newEntity);
 
         return Created();
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeletePublisher(int id)
+    public async Task<IActionResult> DeleteEntity(int id)
     {
         var entity = await _baseRepository.Get(id);
+
         if (entity == null)
             return NotFound();
 
@@ -138,5 +133,19 @@ where TMapper : IBaseMapper<TEntity, TDto>
     private async Task<bool> EntityExistsAsync(int id)
     {
         return await _baseRepository.Exists(id);
+    }
+
+    private string GetKafkaTopicForEntityType(string entityTypeName)
+    {
+        // This method would return the appropriate Kafka topic based on entity type
+        switch (entityTypeName)
+        {
+            case "Publisher":
+                return KafkaTopics.PublishersTopic;
+            case "Book":
+                return KafkaTopics.BooksTopic;
+            default:
+                return KafkaTopics.AuthorsTopic;
+        }
     }
 }

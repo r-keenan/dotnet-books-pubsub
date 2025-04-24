@@ -1,4 +1,5 @@
 using Books.API.Constants;
+using Books.API.Models.Mappers;
 using Books.API.Models.Mappers.Interfaces;
 using Books.API.Repositories;
 using Books.Common.Constants;
@@ -11,7 +12,7 @@ namespace Books.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PublisherController : ControllerBase
+public class PublisherController : BaseController<Publisher, PublisherDto, PublisherMapper>
 {
     private readonly IPublisherRepository _publisherRepository;
     private readonly IPublishEndpoint _publishEndpoint;
@@ -27,7 +28,7 @@ public class PublisherController : ControllerBase
         ApiEndpoints apiEndpoints,
         ILogger<PublisherController> logger,
         IPublisherMapper mapper
-    )
+    ) : base(publisherRepository, mapper, logger)
     {
         _publisherRepository = publisherRepository;
         _publishEndpoint = publishEndpoint;
